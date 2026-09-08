@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+build
+coverage
+package-lock.json
+
+# Spec Kit workflow files — not part of the app's source code
+.claude
+.specify
+specs
