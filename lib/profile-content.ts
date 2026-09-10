@@ -15,8 +15,8 @@ const profileContent: ProfileContent = {
   bio: "Hi, I'm [Your Name] — replace this with a short bio about who you are, what you build, and what you're looking for. Edit lib/profile-content.ts to update it.",
   skills: ["Next.js", "TypeScript", "React", "Tailwind CSS"],
   contactMethod: {
-    label: "your.email@example.com",
-    href: "mailto:your.email@example.com",
+    label: "amit15barua@gmail.com",
+    href: "mailto:amit15barua@gmail.com",
   },
 };
 
