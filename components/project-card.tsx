@@ -6,9 +6,26 @@ import type { Project } from "@/lib/types";
 export function ProjectCard({ project }: { project: Project }) {
   const [imageFailed, setImageFailed] = useState(false);
   const showImage = project.image_url && !imageFailed;
+  const primaryUrl = project.demo_url || project.source_url;
 
   return (
-    <article className="flex flex-col overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-800">
+    <article
+      className={`relative flex flex-col overflow-hidden rounded-lg border border-zinc-200 transition-colors dark:border-zinc-800 ${
+        primaryUrl
+          ? "hover:border-zinc-400 dark:hover:border-zinc-600"
+          : ""
+      }`}
+    >
+      {primaryUrl && (
+        <a
+          href={primaryUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open ${project.title}`}
+          className="absolute inset-0 z-0"
+        />
+      )}
+
       <div className="flex h-40 items-center justify-center bg-zinc-100 dark:bg-zinc-900">
         {showImage ? (
           // A plain <img> avoids requiring the owner to allowlist their
@@ -47,7 +64,7 @@ export function ProjectCard({ project }: { project: Project }) {
         )}
 
         {(project.demo_url || project.source_url) && (
-          <div className="mt-auto flex gap-4 pt-2 text-sm font-medium">
+          <div className="relative z-10 mt-auto flex gap-4 pt-2 text-sm font-medium">
             {project.demo_url && (
               <a
                 href={project.demo_url}
