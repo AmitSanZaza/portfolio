@@ -12,7 +12,7 @@ export type ProfileContent = {
 };
 
 const profileContent: ProfileContent = {
-  bio: "Hi, I'm [Your Name] — replace this with a short bio about who you are, what you build, and what you're looking for. Edit lib/profile-content.ts to update it.",
+  bio: "Hi, I'm Amit Barua — a computer science student passionate about web development. I enjoy building projects with Next.js and TypeScript, and I'm always looking to learn more and take on new challenges.",
   skills: ["Next.js", "TypeScript", "React", "Tailwind CSS"],
   contactMethod: {
     label: "amit15barua@gmail.com",
