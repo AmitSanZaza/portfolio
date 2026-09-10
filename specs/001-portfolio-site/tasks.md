@@ -26,7 +26,7 @@ description: "Task list for Portfolio Site feature implementation"
 - [X] T001 Initialize the Next.js (App Router, TypeScript) project at the repository root, with Tailwind CSS configured, per the structure in [plan.md](./plan.md)
 - [X] T002 [P] Install and pin dependencies: `@supabase/supabase-js`, `@supabase/ssr`, `zod`, `vitest`, `@testing-library/react`, `jsdom` (or equivalent test environment), per [research.md](./research.md)
 - [X] T003 [P] Configure ESLint + Prettier for the TypeScript/Next.js project
-- [ ] T004 Create the Supabase project resources: a `projects` table matching the schema in [data-model.md](./data-model.md) (`id`, `title`, `description`, `image_url`, `technologies`, `demo_url`, `source_url`, `display_order`, `created_at`, `updated_at`), a public-read Storage bucket for project images, and one Auth user for the owner; record the required env vars (Supabase URL, anon key) in `.env.example`
+- [X] T004 Create the Supabase project resources: a `projects` table matching the schema in [data-model.md](./data-model.md) (`id`, `title`, `description`, `image_url`, `technologies`, `demo_url`, `source_url`, `display_order`, `created_at`, `updated_at`), a public-read Storage bucket for project images, and one Auth user for the owner; record the required env vars (Supabase URL, anon key) in `.env.example`
 
 ---
 
@@ -64,7 +64,7 @@ description: "Task list for Portfolio Site feature implementation"
 - [X] T014 [P] [US1] Implement the `ProjectCard` component in `components/project-card.tsx`: title, description, technology tags, demo/source links opening the correct destinations (FR-001, FR-002); if `image_url` is absent or the image fails to load, render a fallback placeholder instead of a broken image icon (Edge Case)
 - [X] T015 [US1] Implement the home page in `app/(public)/page.tsx`: calls `getProjects()` and renders a `ProjectCard` per project, or `EmptyState` when the list is empty (FR-001, FR-003) (depends on T012, T013, T014)
 - [X] T016 [US1] Apply responsive Tailwind styling to the project list/cards so they remain readable and usable at mobile widths, with no horizontal scrolling (FR-012, SC-004) (depends on T015)
-- [ ] T017 [US1] Run [quickstart.md](./quickstart.md) Scenario 1 manually (empty state, project card fields, working links, broken-image fallback) and fix any issues found
+- [X] T017 [US1] Run [quickstart.md](./quickstart.md) Scenario 1 manually (empty state, project card fields, working links, broken-image fallback) and fix any issues found
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently — the public showcase works even before the admin interface exists.
 
@@ -112,7 +112,7 @@ description: "Task list for Portfolio Site feature implementation"
 - [X] T033 [P] [US3] Implement the Skills page in `app/(public)/skills/page.tsx`, displaying the skills list via `getProfileContent()` (FR-009) (depends on T031)
 - [X] T034 [P] [US3] Implement the Contact page in `app/(public)/contact/page.tsx`, displaying a working contact method (e.g., a `mailto:` link) via `getProfileContent()` (FR-010) (depends on T031)
 - [X] T035 [US3] Add About/Skills/Contact links to the `Nav` component in `components/nav.tsx` (depends on T008, T032, T033, T034)
-- [ ] T036 [US3] Run [quickstart.md](./quickstart.md) Scenario 3 manually and fix any issues found
+- [X] T036 [US3] Run [quickstart.md](./quickstart.md) Scenario 3 manually and fix any issues found
 
 **Checkpoint**: All user stories should now be independently functional.
 
@@ -125,7 +125,7 @@ description: "Task list for Portfolio Site feature implementation"
 - [X] T037 [P] Verify responsive layout (FR-012, SC-004) across all pages (home, about, skills, contact, admin) at mobile width; adjust Tailwind classes as needed
 - [X] T038 Configure Supabase Row Level Security (RLS) policies on the `projects` table: public `SELECT`, `INSERT`/`UPDATE`/`DELETE` restricted to the authenticated owner, per the Access control summary in [data-model.md](./data-model.md) (FR-011, SC-005)
 - [X] T039 [P] Configure the project-images Storage bucket policy for public read access (supports FR-001 image display)
-- [ ] T040 Deploy the app to Vercel with the Supabase environment variables configured, then run the [quickstart.md](./quickstart.md) Deployment validation section end-to-end
+- [X] T040 Deploy the app to Vercel with the Supabase environment variables configured, then run the [quickstart.md](./quickstart.md) Deployment validation section end-to-end
 - [X] T041 [P] Write a `README.md` with setup instructions (env vars, Supabase schema, running the dev server) so the owner can maintain the project independently in the future
 
 ---
