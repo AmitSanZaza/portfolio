@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { getProjects } from "@/app/actions/projects";
 import { getProfileContent } from "@/lib/profile-content";
 import { ProjectCard } from "@/components/project-card";
@@ -34,9 +33,9 @@ export default async function HomePage() {
             <a href="#projects" className="btn btn-primary">
               See the projects <span aria-hidden>→</span>
             </a>
-            <Link href="/contact" className="btn btn-ghost">
+            <a href="#contact" className="btn btn-ghost">
               Get in touch
-            </Link>
+            </a>
           </Reveal>
         </div>
       </section>
@@ -77,7 +76,10 @@ export default async function HomePage() {
       <hr className="border-ash" />
 
       {/* Contact — one ask, then the page ends. */}
-      <section className="container-page py-16 sm:py-24">
+      <section
+        id="contact"
+        className="container-page scroll-mt-28 py-16 sm:py-24"
+      >
         <Reveal className="card flex flex-col gap-6 px-6 py-12 sm:px-12 sm:py-16">
           <p className="eyebrow">Building something?</p>
           <h2 className="max-w-2xl text-[40px] leading-[1.15] sm:text-[48px]">

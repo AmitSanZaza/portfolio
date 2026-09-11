@@ -134,6 +134,28 @@
   html {
     color-scheme: light dark;
     scroll-behavior: smooth;
+    /* Scrollbar: thin, in the palette. Standard properties first. */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-ash-strong) transparent;
+  }
+  /* WebKit / Blink: same look, no track chrome. */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-ash-strong);
+    border-radius: 9999px;
+    border: 3px solid var(--color-canvas);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-smoke);
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
   }
   :root[data-theme="light"] {
     color-scheme: light;
