@@ -33,7 +33,7 @@ Why the light canvas is darker than the reference: Monad's `#f6f3f1` is 96 % whi
 
 ## Theme axes (user-selectable on `/design`)
 
-Three `data-*` attributes on `<html>`, set before paint by `components/theme-init.tsx` from `localStorage`, driven by `components/theme-picker.tsx`:
+Three `data-*` attributes on `<html>`, set before paint by `components/theme-init.tsx` from `localStorage`. The picker on `/design` exposes them as **palette cards** (paper + accent) plus a theme segmented control, with a live specimen so the change is visible where you click:
 
 | Axis          | Values                                                  | Effect                                                  |
 | ------------- | ------------------------------------------------------- | ------------------------------------------------------- |
@@ -53,13 +53,21 @@ Accent pairs (light canvas / black canvas) — every one ≥ 4.5:1 as button tex
 
 The rule "one accent per screen" holds whatever the accent is.
 
-## Motion
+## Motion — scroll choreography (Apple product-page grammar)
 
-- **Scroll reveal** (`components/reveal.tsx`): opacity 0→1 and 14px lift, 640ms, `cubic-bezier(.2,.7,.2,1)`, optional stagger via `--reveal-delay`. Fires once, on first intersection — or immediately if the element is already above the viewport (back-navigation, anchor jumps). Gated on the `.js` class so no-JS users see everything.
-- **Card lift**: `translateY(-3px)` on hover, 220ms. Transform only, no shadow.
-- **Anchor scroll**: `scroll-behavior: smooth` on `html`.
-- **Reduced motion**: every transition and animation collapses to 0.01ms and reveals render visible.
-- Never animate width/height/layout; never `transition: all`.
+Scroll-linked, not time-linked: elements are scrubbed by their position in the viewport via CSS `animation-timeline: view()`. Browsers without it fall back to a one-shot reveal on intersection (`components/reveal.tsx`). Everything is gated on the `.js` class (no-JS sees all content) and flattened under `prefers-reduced-motion`.
+
+| Pattern                | Where                                   | How                                                                                              |
+| ---------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| **Frosted sticky nav** | `header.nav-frosted`                    | `position: sticky`, canvas at 80 % over `saturate(180%) blur(20px)`. Anchors use `scroll-mt-28`. |
+| **Masthead recedes**   | Home hero `.hero-recede`                | Fades to 0 and scales to .96 with a 32 px lift over its exit range.                              |
+| **Enter-up**           | Every `[data-reveal]`                   | Opacity 0→1, 28 px rise, scale .985→1 over `entry 0%–60%`.                                       |
+| **Tile settle**        | Card imagery `.tile-settle`             | Scale 1.06→1 over `entry 0%–80%`.                                                                |
+| **Pinned aside**       | Projects header `.pin-aside`            | `sticky; top: 112px` beside the scrolling grid (≥ 1024 px).                                      |
+| **Scrub text**         | About bio (`components/scrub-text.tsx`) | Each word goes smoke→ink as it crosses `cover 20%–40%`.                                          |
+| **Card lift**          | `.card-lift:hover`                      | `translateY(-3px)`, 220 ms. No shadow.                                                           |
+
+Rules: transform, opacity and color only; never width/height/layout; never `transition: all`; one choreographed element per view (hero _or_ pinned header, not both fighting).
 
 ## Typography
 

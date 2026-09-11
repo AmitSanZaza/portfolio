@@ -24,7 +24,7 @@ export function ProjectCard({ project }: { project: Project }) {
         />
       )}
 
-      <div className="flex aspect-[16/10] items-center justify-center overflow-hidden rounded-frame bg-surface-2">
+      <div className="tile-settle flex aspect-[16/10] items-center justify-center overflow-hidden rounded-frame bg-surface-2">
         {showImage ? (
           // A plain <img> avoids requiring the owner to allowlist their
           // Supabase Storage domain in next.config.ts for Next/Image.

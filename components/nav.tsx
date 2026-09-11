@@ -16,7 +16,7 @@ export async function Nav() {
   } = await supabase.auth.getUser();
 
   return (
-    <header className="border-b border-ash">
+    <header className="nav-frosted border-b border-ash">
       <nav className="container-page flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-5">
         <Link href="/" className="nav-link !text-ink">
           Amit Barua

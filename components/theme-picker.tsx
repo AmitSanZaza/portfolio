@@ -2,10 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import {
-  ACCENTS,
-  ACCENT_PREVIEW,
-  PAPERS,
-  PAPER_PREVIEW,
+  PALETTES,
   STORAGE_KEYS,
   THEMES,
   type Accent,
@@ -13,24 +10,18 @@ import {
   type Theme,
 } from "@/lib/theme/options";
 
-type Snapshot = {
-  theme: Theme;
-  paper: Paper;
-  accent: Accent;
-  isDark: boolean;
-};
-
+type Snapshot = { theme: Theme; paper: Paper; accent: Accent; isDark: boolean };
 const DEFAULTS: Snapshot = {
   theme: "system",
   paper: "kraft",
   accent: "lake",
   isDark: false,
 };
-
 const EVENT = "portfolio:theme-change";
 
-// The <html> data attributes are the source of truth (theme-init.tsx sets
-// them before paint). This store just reads them back for the UI.
+// <html> data attributes are the source of truth (theme-init.tsx sets them
+// before paint). This store reads them back so the controls show state.
+let last: Snapshot = DEFAULTS;
 function getSnapshot(): Snapshot {
   const d = document.documentElement;
   const theme = (d.getAttribute("data-theme") ?? "system") as Theme;
@@ -40,12 +31,6 @@ function getSnapshot(): Snapshot {
     theme === "dark" ||
     (theme === "system" &&
       window.matchMedia("(prefers-color-scheme: dark)").matches);
-  return cached(theme, paper, accent, isDark);
-}
-
-// useSyncExternalStore needs a stable object for unchanged state.
-let last: Snapshot = DEFAULTS;
-function cached(theme: Theme, paper: Paper, accent: Accent, isDark: boolean) {
   if (
     last.theme !== theme ||
     last.paper !== paper ||
@@ -56,7 +41,6 @@ function cached(theme: Theme, paper: Paper, accent: Accent, isDark: boolean) {
   }
   return last;
 }
-
 function subscribe(onChange: () => void) {
   const mq = window.matchMedia("(prefers-color-scheme: dark)");
   mq.addEventListener("change", onChange);
@@ -67,7 +51,12 @@ function subscribe(onChange: () => void) {
   };
 }
 
-function apply(attr: string, key: string, value: string, defaultValue: string) {
+function setAxis(
+  attr: string,
+  key: string,
+  value: string,
+  defaultValue: string,
+) {
   const d = document.documentElement;
   if (value === defaultValue) d.removeAttribute(attr);
   else d.setAttribute(attr, value);
@@ -75,20 +64,24 @@ function apply(attr: string, key: string, value: string, defaultValue: string) {
     if (value === defaultValue) localStorage.removeItem(key);
     else localStorage.setItem(key, value);
   } catch {
-    // Storage blocked (private mode) — the choice still applies for this page.
+    // Storage blocked — the choice still applies to this page.
   }
+}
+function commit() {
   window.dispatchEvent(new Event(EVENT));
 }
 
-const pickTheme = (v: Theme) =>
-  apply("data-theme", STORAGE_KEYS.theme, v, "system");
-const pickPaper = (v: Paper) =>
-  apply("data-paper", STORAGE_KEYS.paper, v, "kraft");
-const pickAccent = (v: Accent) =>
-  apply("data-accent", STORAGE_KEYS.accent, v, "lake");
+const setTheme = (v: Theme) => {
+  setAxis("data-theme", STORAGE_KEYS.theme, v, "system");
+  commit();
+};
+const setPalette = (paper: Paper, accent: Accent) => {
+  setAxis("data-paper", STORAGE_KEYS.paper, paper, "kraft");
+  setAxis("data-accent", STORAGE_KEYS.accent, accent, "lake");
+  commit();
+};
 
-// Restyles the whole site live. Choices persist in localStorage and are
-// replayed before paint on the next load by theme-init.tsx.
+// Click a palette → the whole site takes it, immediately and on next load.
 export function ThemePicker() {
   const { theme, paper, accent, isDark } = useSyncExternalStore(
     subscribe,
@@ -99,105 +92,75 @@ export function ThemePicker() {
   return (
     <div className="card flex flex-col gap-8 p-6 sm:p-8">
       <div className="flex flex-col gap-2">
-        <p className="eyebrow">Try it</p>
+        <p className="eyebrow">Pick a palette</p>
         <h2 className="text-[28px] leading-[1.2]">
-          These controls restyle the whole site
+          Click one — the whole site takes it
         </h2>
         <p className="max-w-xl text-[14px] text-graphite">
-          Pick a theme, a paper tone and the one accent color. Your choice is
-          saved in this browser and applied before the next page paints.
+          Each palette is a paper tone plus the one accent color. Saved in this
+          browser and applied before the next page paints.
         </p>
       </div>
 
-      <fieldset className="flex flex-col gap-3">
-        <legend className="eyebrow mb-3">Theme</legend>
-        <div className="flex flex-wrap gap-2">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        {PALETTES.map((p) => {
+          const c = isDark ? p.dark : p.light;
+          const pressed = p.paper === paper && p.accent === accent;
+          return (
+            <button
+              key={p.id}
+              type="button"
+              className="palette"
+              aria-pressed={pressed}
+              onClick={() => setPalette(p.paper, p.accent)}
+            >
+              <span className="palette-strip" aria-hidden>
+                <span style={{ background: c.canvas }} />
+                <span style={{ background: c.surface }} />
+                <span style={{ background: c.ink }} />
+                <span style={{ background: c.accent }} />
+              </span>
+              <span className="palette-name">{p.name}</span>
+              <span className="palette-meta">
+                {pressed ? "Applied" : "Apply"}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="flex flex-wrap items-center gap-4">
+        <span className="eyebrow">Theme</span>
+        <div className="segmented" role="group" aria-label="Theme">
           {THEMES.map((t) => (
             <button
               key={t}
               type="button"
-              className="swatch"
               aria-pressed={theme === t}
-              onClick={() => pickTheme(t)}
+              onClick={() => setTheme(t)}
             >
-              <span
-                className="swatch-dot"
-                style={{
-                  background:
-                    t === "dark"
-                      ? "#000"
-                      : t === "light"
-                        ? PAPER_PREVIEW[paper]
-                        : "linear-gradient(90deg, #ebe5dc 50%, #000 50%)",
-                }}
-                aria-hidden
-              />
               {t}
             </button>
           ))}
         </div>
-      </fieldset>
+      </div>
 
-      <fieldset className="flex flex-col gap-3">
-        <legend className="eyebrow mb-3">Paper (light theme)</legend>
-        <div className="flex flex-wrap gap-2">
-          {PAPERS.map((p) => (
-            <button
-              key={p}
-              type="button"
-              className="swatch"
-              aria-pressed={paper === p}
-              onClick={() => pickPaper(p)}
-            >
-              <span
-                className="swatch-dot"
-                style={{ background: PAPER_PREVIEW[p] }}
-                aria-hidden
-              />
-              {p}
-            </button>
-          ))}
+      {/* Live specimen — rendered from the real tokens, so it changes the
+          instant a palette is clicked. */}
+      <div className="rounded-frame border border-ash bg-canvas p-5">
+        <p className="eyebrow mb-3">Live preview</p>
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="btn btn-primary">Primary action</span>
+          <span className="btn btn-ghost">Secondary</span>
+          <span className="tag">Tag</span>
+          <span className="text-[14px]">
+            Body text with a{" "}
+            <a href="#top" className="link">
+              link
+            </a>
+            .
+          </span>
         </div>
-      </fieldset>
-
-      <fieldset className="flex flex-col gap-3">
-        <legend className="eyebrow mb-3">Accent — the one action color</legend>
-        <div className="flex flex-wrap gap-2">
-          {ACCENTS.map((a) => (
-            <button
-              key={a}
-              type="button"
-              className="swatch"
-              aria-pressed={accent === a}
-              onClick={() => pickAccent(a)}
-            >
-              <span
-                className="swatch-dot"
-                style={{
-                  background: isDark
-                    ? ACCENT_PREVIEW[a].dark
-                    : ACCENT_PREVIEW[a].light,
-                }}
-                aria-hidden
-              />
-              {a}
-            </button>
-          ))}
-        </div>
-      </fieldset>
-
-      <div>
-        <button
-          type="button"
-          className="btn btn-ghost"
-          onClick={() => {
-            pickTheme("system");
-            pickPaper("kraft");
-            pickAccent("lake");
-          }}
-        >
-          Reset to defaults
-        </button>
       </div>
     </div>
   );

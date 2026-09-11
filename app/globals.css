@@ -336,27 +336,116 @@
     }
   }
 
-  /* Scroll reveal — opacity/transform only, gated on .js so no-JS users
-     see everything, and flattened under prefers-reduced-motion. */
+  /* ------------------------------------------------------------------
+     Motion — Apple-style scroll choreography.
+     Fallback (no scroll-driven animations): reveal once on intersection,
+     toggled by components/reveal.tsx. Modern browsers: the same elements
+     are scrubbed by their position in the viewport instead.
+     ------------------------------------------------------------------ */
   .js [data-reveal] {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(18px);
     transition:
       opacity 640ms cubic-bezier(0.2, 0.7, 0.2, 1),
       transform 640ms cubic-bezier(0.2, 0.7, 0.2, 1);
     transition-delay: var(--reveal-delay, 0ms);
-    will-change: opacity, transform;
   }
   .js [data-reveal].is-in {
     opacity: 1;
     transform: none;
-    will-change: auto;
   }
-  @media (prefers-reduced-motion: reduce) {
+
+  @supports (animation-timeline: view()) {
     .js [data-reveal] {
       opacity: 1;
       transform: none;
       transition: none;
+      animation: enter-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+      animation-delay: 0s;
+    }
+    /* Hero recedes as you scroll away, like a product page masthead. */
+    .js .hero-recede {
+      animation: recede linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+      transform-origin: 0% 50%;
+    }
+    /* Tile imagery settles from a slight zoom as it enters. */
+    .js .tile-settle {
+      animation: settle linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 80%;
+    }
+    /* Prose lights up word by word as it crosses the lower third. */
+    .js .scrub-word {
+      color: var(--color-smoke);
+      animation: ink-in linear both;
+      animation-timeline: view();
+      animation-range: cover 20% cover 40%;
+    }
+  }
+
+  @keyframes enter-up {
+    from {
+      opacity: 0;
+      transform: translateY(28px) scale(0.985);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes recede {
+    to {
+      opacity: 0;
+      transform: translateY(-32px) scale(0.96);
+    }
+  }
+  @keyframes settle {
+    from {
+      transform: scale(1.06);
+    }
+    to {
+      transform: none;
+    }
+  }
+  @keyframes ink-in {
+    to {
+      color: var(--color-ink);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js [data-reveal],
+    .js .hero-recede,
+    .js .tile-settle,
+    .js .scrub-word {
+      opacity: 1;
+      transform: none;
+      transition: none;
+      animation: none;
+      color: inherit;
+    }
+  }
+
+  /* Frosted sticky header — canvas at 80% over a saturate+blur backdrop. */
+  .nav-frosted {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: color-mix(in srgb, var(--color-canvas) 80%, transparent);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+  }
+
+  /* Pinned section header beside scrolling content (desktop). */
+  @media (min-width: 1024px) {
+    .pin-aside {
+      position: sticky;
+      top: 112px;
+      align-self: start;
     }
   }
 
@@ -369,35 +458,71 @@
     transform: translateY(-3px);
   }
 
-  /* Theme picker swatches on /design. */
-  .swatch {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+  /* Theme picker on /design: palette cards + a segmented theme control. */
+  .palette {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
     border: 1px solid var(--color-ash);
-    border-radius: 9999px;
-    padding: 8px 14px 8px 8px;
+    border-radius: var(--radius-frame);
+    background: transparent;
+    text-align: left;
+    color: var(--color-ink);
+    transition:
+      border-color 120ms ease,
+      transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .palette:hover {
+    border-color: var(--color-ink);
+    transform: translateY(-2px);
+  }
+  .palette[aria-pressed="true"] {
+    border-color: var(--color-accent);
+    box-shadow: inset 0 0 0 1px var(--color-accent);
+  }
+  .palette-strip {
+    display: grid;
+    grid-template-columns: 3fr 2fr 1fr 2fr;
+    height: 44px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--color-ash);
+  }
+  .palette-name {
     font-size: 12px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--color-ink);
-    background: transparent;
-    transition:
-      border-color 120ms ease,
-      background-color 120ms ease;
   }
-  .swatch:hover {
-    border-color: var(--color-ink);
+  .palette-meta {
+    font-size: 11px;
+    color: var(--color-smoke);
   }
-  .swatch[aria-pressed="true"] {
-    border-color: var(--color-ink);
-    background: var(--color-surface);
-  }
-  .swatch-dot {
-    width: 22px;
-    height: 22px;
+
+  .segmented {
+    display: inline-flex;
+    border: 1px solid var(--color-ash);
     border-radius: 9999px;
-    border: 1px solid var(--color-ash-strong);
+    padding: 3px;
+    gap: 2px;
+  }
+  .segmented button {
+    border-radius: 9999px;
+    padding: 8px 14px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-smoke);
+    transition:
+      background-color 120ms ease,
+      color 120ms ease;
+  }
+  .segmented button:hover {
+    color: var(--color-ink);
+  }
+  .segmented button[aria-pressed="true"] {
+    background: var(--color-ink);
+    color: var(--color-canvas);
   }
 
   .display {

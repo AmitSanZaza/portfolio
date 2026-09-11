@@ -72,7 +72,7 @@ function Section({
 
 export default function DesignPage() {
   return (
-    <div className="container-page py-16 sm:py-24">
+    <div id="top" className="container-page py-16 sm:py-24">
       <PageHeader eyebrow="How this site is built" title="Design system" />
       <p className="mb-6 max-w-2xl text-[17px] leading-relaxed">
         A developer&apos;s field notebook on warm paper. Derived from two
