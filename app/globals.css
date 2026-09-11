@@ -25,17 +25,17 @@
   --radius-input: 12px;
 }
 
-/* Dark: warm ink, never pure black. Follows the system setting. */
+/* Dark: true black for OLED, warm surfaces on top. Follows the system setting. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-canvas: #1c1a18;
-    --color-surface: #242220;
-    --color-surface-2: #2d2a27;
+    --color-canvas: #000000;
+    --color-surface: #121110;
+    --color-surface-2: #1c1a18;
     --color-ink: #f1ece5;
     --color-graphite: #cbc5bd;
     --color-smoke: #9d968d;
-    --color-ash: #3a3734;
-    --color-ash-strong: #76716b;
+    --color-ash: #2a2825;
+    --color-ash-strong: #6f6a64;
     --color-accent: #8fb0f5;
     --color-accent-deep: #a9c3f8;
     --color-accent-soft: #2a3a5e;
