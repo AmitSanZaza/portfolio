@@ -7,22 +7,26 @@ export const metadata: Metadata = {
 };
 
 const colors = [
-  { name: "canvas", hex: "#f6f3f1", role: "Page background. Never white." },
-  { name: "surface", hex: "#fbf9f7", role: "Cards, inputs, panels." },
+  {
+    name: "canvas",
+    hex: "#ebe5dc",
+    role: "Page background. Kraft, not white.",
+  },
+  { name: "surface", hex: "#f3eee7", role: "Cards, inputs, panels." },
   {
     name: "surface-2",
-    hex: "#efeae5",
+    hex: "#e2dbd1",
     role: "Image placeholders, grouped panels.",
   },
   { name: "ink", hex: "#1a1917", role: "Headings, primary text." },
-  { name: "graphite", hex: "#4e4d4d", role: "Body copy." },
-  { name: "smoke", hex: "#6b6966", role: "Helper text, eyebrows." },
-  { name: "ash", hex: "#cecac8", role: "Every 1px border." },
-  { name: "ash-strong", hex: "#8a8681", role: "Input borders (3:1)." },
+  { name: "graphite", hex: "#4a4846", role: "Body copy." },
+  { name: "smoke", hex: "#66625d", role: "Helper text, eyebrows." },
+  { name: "ash", hex: "#cbc4ba", role: "Every 1px border." },
+  { name: "ash-strong", hex: "#7d7973", role: "Input borders (3:1)." },
   { name: "accent", hex: "#2b59d1", role: "The one action per screen." },
   { name: "accent-deep", hex: "#2349b0", role: "Accent hover." },
   { name: "accent-soft", hex: "#cfdaf5", role: "Focus ring, selection." },
-  { name: "danger", hex: "#b4432c", role: "Destructive actions, errors." },
+  { name: "danger", hex: "#a63c26", role: "Destructive actions, errors." },
 ];
 
 const rules = {
@@ -81,11 +85,11 @@ export default function DesignPage() {
             <li key={c.name} className="card overflow-hidden">
               <div
                 className="h-20 border-b border-ash"
-                style={{ background: c.hex }}
+                style={{ background: `var(--color-${c.name})` }}
               />
               <div className="flex flex-col gap-1 p-4 text-[12px]">
                 <span className="text-ink">{c.name}</span>
-                <span className="text-smoke">{c.hex}</span>
+                <span className="text-smoke">{c.hex} · light</span>
                 <span className="pt-1 text-graphite">{c.role}</span>
               </div>
             </li>

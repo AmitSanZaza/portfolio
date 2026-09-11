@@ -2,18 +2,19 @@
 
 /* Design tokens — see DESIGN.md for roles and rules. */
 @theme {
-  --color-canvas: #f6f3f1;
-  --color-surface: #fbf9f7;
-  --color-surface-2: #efeae5;
+  /* Light: kraft paper, not off-white (luminance .79, was .90). */
+  --color-canvas: #ebe5dc;
+  --color-surface: #f3eee7;
+  --color-surface-2: #e2dbd1;
   --color-ink: #1a1917;
-  --color-graphite: #4e4d4d;
-  --color-smoke: #6b6966;
-  --color-ash: #cecac8;
-  --color-ash-strong: #8a8681;
+  --color-graphite: #4a4846;
+  --color-smoke: #66625d;
+  --color-ash: #cbc4ba;
+  --color-ash-strong: #7d7973;
   --color-accent: #2b59d1;
   --color-accent-deep: #2349b0;
   --color-accent-soft: #cfdaf5;
-  --color-danger: #b4432c;
+  --color-danger: #a63c26;
 
   --font-serif: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
   --font-mono:
@@ -24,9 +25,27 @@
   --radius-input: 12px;
 }
 
+/* Dark: warm ink, never pure black. Follows the system setting. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-canvas: #1c1a18;
+    --color-surface: #242220;
+    --color-surface-2: #2d2a27;
+    --color-ink: #f1ece5;
+    --color-graphite: #cbc5bd;
+    --color-smoke: #9d968d;
+    --color-ash: #3a3734;
+    --color-ash-strong: #76716b;
+    --color-accent: #8fb0f5;
+    --color-accent-deep: #a9c3f8;
+    --color-accent-soft: #2a3a5e;
+    --color-danger: #e8826a;
+  }
+}
+
 @layer base {
   html {
-    color-scheme: light;
+    color-scheme: light dark;
   }
 
   body {
@@ -125,7 +144,7 @@
   }
   .btn-primary {
     background: var(--color-accent);
-    color: var(--color-surface);
+    color: var(--color-canvas);
   }
   .btn-primary:hover:not(:disabled) {
     background: var(--color-accent-deep);
@@ -135,7 +154,7 @@
     color: var(--color-canvas);
   }
   .btn-dark:hover:not(:disabled) {
-    background: #000;
+    background: var(--color-graphite);
   }
   .btn-ghost {
     background: transparent;
