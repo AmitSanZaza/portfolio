@@ -12,22 +12,22 @@ Live reference page: `/design` (renders every token and component below).
 
 ## Colors
 
-Two themes, same tokens. Light is the default; dark follows `prefers-color-scheme`. Both are warm — no pure white, no pure black.
+Two themes, same tokens. Light is the default; dark follows `prefers-color-scheme`. Light is warm kraft, never white; dark is true black for OLED with warm surfaces layered on top.
 
-| Token         | Light     | Dark      | Role                                                             |
-| ------------- | --------- | --------- | ---------------------------------------------------------------- |
-| `canvas`      | `#ebe5dc` | `#1c1a18` | Page background. Kraft paper / warm ink. Never `#fff` or `#000`. |
-| `surface`     | `#f3eee7` | `#242220` | Cards, inputs, panels — one tonal step off the canvas.           |
-| `surface-2`   | `#e2dbd1` | `#2d2a27` | Image placeholders, grouped panels.                              |
-| `ink`         | `#1a1917` | `#f1ece5` | Headings, primary text, dark button fill.                        |
-| `graphite`    | `#4a4846` | `#cbc5bd` | Body copy.                                                       |
-| `smoke`       | `#66625d` | `#9d968d` | Helper text, eyebrows, inactive nav (≥ 4.8:1 on canvas).         |
-| `ash`         | `#cbc4ba` | `#3a3734` | All 1px borders and dividers. The border IS the structure.       |
-| `ash-strong`  | `#7d7973` | `#76716b` | Input borders only — ≥ 3:1 (WCAG 1.4.11).                        |
-| `accent`      | `#2b59d1` | `#8fb0f5` | Primary action only. One per screen.                             |
-| `accent-deep` | `#2349b0` | `#a9c3f8` | Accent hover/pressed.                                            |
-| `accent-soft` | `#cfdaf5` | `#2a3a5e` | Selection, soft focus ring.                                      |
-| `danger`      | `#a63c26` | `#e8826a` | Destructive actions and errors only.                             |
+| Token         | Light     | Dark      | Role                                                       |
+| ------------- | --------- | --------- | ---------------------------------------------------------- |
+| `canvas`      | `#ebe5dc` | `#000000` | Page background. Kraft paper / OLED black. Never `#fff`.   |
+| `surface`     | `#f3eee7` | `#121110` | Cards, inputs, panels — one tonal step off the canvas.     |
+| `surface-2`   | `#e2dbd1` | `#1c1a18` | Image placeholders, grouped panels.                        |
+| `ink`         | `#1a1917` | `#f1ece5` | Headings, primary text, dark button fill.                  |
+| `graphite`    | `#4a4846` | `#cbc5bd` | Body copy.                                                 |
+| `smoke`       | `#66625d` | `#9d968d` | Helper text, eyebrows, inactive nav (≥ 4.8:1 on canvas).   |
+| `ash`         | `#cbc4ba` | `#2a2825` | All 1px borders and dividers. The border IS the structure. |
+| `ash-strong`  | `#7d7973` | `#6f6a64` | Input borders only — ≥ 3:1 (WCAG 1.4.11).                  |
+| `accent`      | `#2b59d1` | `#8fb0f5` | Primary action only. One per screen.                       |
+| `accent-deep` | `#2349b0` | `#a9c3f8` | Accent hover/pressed.                                      |
+| `accent-soft` | `#cfdaf5` | `#2a3a5e` | Selection, soft focus ring.                                |
+| `danger`      | `#a63c26` | `#e8826a` | Destructive actions and errors only.                       |
 
 Why the light canvas is darker than the reference: Monad's `#f6f3f1` is 96 % white and glares on a bright screen. `#ebe5dc` keeps the paper feel at luminance .79. Every text/background pair above is ≥ 4.5:1 in both themes; input borders ≥ 3:1.
 
