@@ -5,7 +5,7 @@ import { ProjectCard } from "@/components/project-card";
 import { EmptyState } from "@/components/empty-state";
 
 export default async function HomePage() {
-  const [projects, { headline, tagline }] = await Promise.all([
+  const [projects, { headline, tagline, contactMethod }] = await Promise.all([
     getProjects(),
     getProfileContent(),
   ]);
@@ -53,6 +53,26 @@ export default async function HomePage() {
             ))}
           </div>
         )}
+      </section>
+
+      <hr className="border-ash" />
+
+      {/* Contact — one ask, then the page ends. */}
+      <section className="container-page py-16 sm:py-24">
+        <div className="card flex flex-col gap-6 px-6 py-12 sm:px-12 sm:py-16">
+          <p className="eyebrow">Building something?</p>
+          <h2 className="max-w-2xl text-[40px] leading-[1.15] sm:text-[48px]">
+            Need a developer who finishes what he starts?
+          </h2>
+          <p className="max-w-xl text-graphite">
+            One email is enough. I reply to every message.
+          </p>
+          <div>
+            <a href={contactMethod.href} className="btn btn-primary">
+              {contactMethod.label}
+            </a>
+          </div>
+        </div>
       </section>
     </>
   );

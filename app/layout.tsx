@@ -35,8 +35,13 @@ export default function RootLayout({
       className={`${instrumentSerif.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-canvas text-graphite">
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         <Nav />
-        <main className="flex flex-1 flex-col">{children}</main>
+        <main id="main" className="flex flex-1 flex-col">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

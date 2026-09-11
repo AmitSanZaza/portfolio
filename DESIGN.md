@@ -19,8 +19,9 @@ Live reference page: `/design` (renders every token and component below).
 | `surface-2`   | `#efeae5` | Image placeholders, grouped panels, code blocks.                     |
 | `ink`         | `#1a1917` | Headings, primary text, dark button fill.                            |
 | `graphite`    | `#4e4d4d` | Body copy, secondary text.                                           |
-| `smoke`       | `#797776` | Helper text, eyebrows, inactive nav.                                 |
+| `smoke`       | `#6b6966` | Helper text, eyebrows, inactive nav (4.9:1 on canvas).               |
 | `ash`         | `#cecac8` | All 1px borders and dividers. The border IS the structure.           |
+| `ash-strong`  | `#8a8681` | Input borders only — 3:1 against surface (WCAG 1.4.11).              |
 | `accent`      | `#2b59d1` | Primary action only. One per screen.                                 |
 | `accent-deep` | `#2349b0` | Hover/pressed state of `accent`.                                     |
 | `accent-soft` | `#cfdaf5` | Focus rings, selected states, one highlighted word max.              |
@@ -44,7 +45,7 @@ Type scale (minor third, 16px base):
 | Heading-sm      | 28px                       | 1.2         | −0.01em            | Serif 400 |
 | Subheading      | 22px                       | 1.3         | 0                  | Serif 400 |
 | Body-lg         | 18px                       | 1.6         | 0                  | Mono 400  |
-| Body            | 15px                       | 1.65        | 0                  | Mono 400  |
+| Body            | 16px                       | 1.65        | 0                  | Mono 400  |
 | Body-sm         | 13px                       | 1.6         | 0                  | Mono 400  |
 | Eyebrow / label | 12px                       | 1.4         | +0.08em, uppercase | Mono 500  |
 
@@ -61,10 +62,13 @@ Type scale (minor third, 16px base):
 - **Dark pill button** — `ink` fill, `canvas` text, same shape. For admin / non-marketing actions.
 - **Ghost pill button** — transparent, 1px `ash` border, `ink` text. Hover: border becomes `ink`.
 - **Inline link** — inherits color, persistent 1px underline, underline offset 3px. Hover: color `accent`. Never underline-on-hover-only.
-- **Nav link** — mono 12px uppercase, `smoke`, hover `ink`, no underline.
-- **Card** — `surface` fill, 1px `ash` border, radius 24, padding 24. Title serif 22–28px, body mono 15px.
+- **Nav link** — mono 12px uppercase, `smoke`, hover `ink`, no underline, 8px vertical padding (≥ 24px hit area).
+- **Card** — `surface` fill, 1px `ash` border, radius 24, padding 24. Title serif 22–28px, body mono 15px. Hover and focus-within: border `ink`.
 - **Tag** — 1px `ash` border, transparent fill, mono 12px uppercase, radius 9999, padding 4px 10px.
-- **Input** — `surface` fill, 1px `ash` border, radius 12, padding 10px 14px, mono 15px. Focus: 2px `accent-soft` ring + `accent` border.
+- **Input** — `surface` fill, 1px `ash-strong` border, radius 12, padding 10px 14px, mono 16px. Focus: `accent` border + soft ring.
+- **Focus** — every interactive element gets a 2px `accent` outline, offset 2px, on `:focus-visible`. Never removed.
+- **Skip link** — first tab stop, "Skip to content", visible on focus only.
+- **Motion** — transitions ≤150ms, colors/borders only; all disabled under `prefers-reduced-motion`.
 - **Eyebrow** — mono 12px uppercase `smoke`, sits above a serif heading, 12px gap.
 - **Section** — eyebrow + serif heading + optional mono lede, then content. Hairline `ash` divider between sections.
 

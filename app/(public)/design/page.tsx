@@ -16,8 +16,9 @@ const colors = [
   },
   { name: "ink", hex: "#1a1917", role: "Headings, primary text." },
   { name: "graphite", hex: "#4e4d4d", role: "Body copy." },
-  { name: "smoke", hex: "#797776", role: "Helper text, eyebrows." },
+  { name: "smoke", hex: "#6b6966", role: "Helper text, eyebrows." },
   { name: "ash", hex: "#cecac8", role: "Every 1px border." },
+  { name: "ash-strong", hex: "#8a8681", role: "Input borders (3:1)." },
   { name: "accent", hex: "#2b59d1", role: "The one action per screen." },
   { name: "accent-deep", hex: "#2349b0", role: "Accent hover." },
   { name: "accent-soft", hex: "#cfdaf5", role: "Focus ring, selection." },
@@ -102,16 +103,18 @@ export default function DesignPage() {
           </div>
           <div className="flex flex-col gap-2">
             <p className="eyebrow">Heading · 40px · −0.02em</p>
-            <h3 className="text-[40px] leading-[1.15]">
+            <p className="font-serif text-[40px] leading-[1.15] tracking-[-0.02em] text-ink">
               Jumps over the lazy dog
-            </h3>
+            </p>
           </div>
           <div className="flex flex-col gap-2">
             <p className="eyebrow">Heading-sm · 28px</p>
-            <h3 className="text-[28px] leading-[1.2]">And keeps running</h3>
+            <p className="font-serif text-[28px] leading-[1.2] tracking-[-0.02em] text-ink">
+              And keeps running
+            </p>
           </div>
           <div className="flex flex-col gap-2">
-            <p className="eyebrow">Body · JetBrains Mono 400 · 15px / 1.65</p>
+            <p className="eyebrow">Body · JetBrains Mono 400 · 16px / 1.65</p>
             <p className="max-w-xl">
               Body copy is set in a monospace face on purpose: it reads as
               written by someone who spends the day in an editor. Inline links
