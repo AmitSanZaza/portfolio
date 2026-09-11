@@ -16,46 +16,34 @@ export async function Nav() {
   } = await supabase.auth.getUser();
 
   return (
-    <header className="border-b border-zinc-200 dark:border-zinc-800">
-      <nav className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-4 sm:px-8">
-        <Link href="/" className="font-semibold tracking-tight">
-          Portfolio
+    <header className="border-b border-ash">
+      <nav className="container-page flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-5">
+        <Link href="/" className="nav-link !text-ink">
+          Amit Barua
         </Link>
-        <ul className="flex flex-wrap items-center gap-4 text-sm">
+        <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
           {links.map((link) => (
             <li key={link.href}>
-              <Link
-                href={link.href}
-                className="text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
-              >
+              <Link href={link.href} className="nav-link">
                 {link.label}
               </Link>
             </li>
           ))}
           <li>
             {user ? (
-              <div className="flex items-center gap-4">
-                <Link
-                  href="/admin/projects"
-                  className="text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
-                >
+              <div className="flex items-center gap-6">
+                <Link href="/admin/projects" className="nav-link">
                   Admin
                 </Link>
                 <form action={logout}>
-                  <button
-                    type="submit"
-                    className="text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
-                  >
+                  <button type="submit" className="nav-link">
                     Log out
                   </button>
                 </form>
               </div>
             ) : (
-              <Link
-                href="/admin/login"
-                className="text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
-              >
-                Admin login
+              <Link href="/admin/login" className="nav-link">
+                Admin
               </Link>
             )}
           </li>

@@ -1,26 +1,189 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Design tokens — see DESIGN.md for roles and rules. */
+@theme {
+  --color-canvas: #f6f3f1;
+  --color-surface: #fbf9f7;
+  --color-surface-2: #efeae5;
+  --color-ink: #1a1917;
+  --color-graphite: #4e4d4d;
+  --color-smoke: #797776;
+  --color-ash: #cecac8;
+  --color-accent: #2b59d1;
+  --color-accent-deep: #2349b0;
+  --color-accent-soft: #cfdaf5;
+  --color-danger: #b4432c;
+
+  --font-serif: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-mono:
+    var(--font-jetbrains-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --radius-card: 24px;
+  --radius-frame: 16px;
+  --radius-input: 12px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    color-scheme: light;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background: var(--color-canvas);
+    color: var(--color-graphite);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    color: var(--color-ink);
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background: var(--color-accent-soft);
+    color: var(--color-ink);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-smoke);
+  }
+
+  .link {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color 120ms ease;
+  }
+  .link:hover {
+    color: var(--color-accent);
+  }
+
+  .nav-link {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-smoke);
+    transition: color 120ms ease;
+  }
+  .nav-link:hover {
+    color: var(--color-ink);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 9999px;
+    padding: 12px 24px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1;
+    border: 1px solid transparent;
+    transition:
+      background-color 120ms ease,
+      border-color 120ms ease,
+      color 120ms ease;
+  }
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    background: var(--color-accent);
+    color: var(--color-surface);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--color-accent-deep);
+  }
+  .btn-dark {
+    background: var(--color-ink);
+    color: var(--color-canvas);
+  }
+  .btn-dark:hover:not(:disabled) {
+    background: #000;
+  }
+  .btn-ghost {
+    background: transparent;
+    border-color: var(--color-ash);
+    color: var(--color-ink);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    border-color: var(--color-ink);
+  }
+
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-ash);
+    border-radius: var(--radius-card);
+  }
+
+  .tag {
+    display: inline-block;
+    border: 1px solid var(--color-ash);
+    border-radius: 9999px;
+    padding: 4px 10px;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-graphite);
+    line-height: 1.4;
+  }
+
+  .input {
+    width: 100%;
+    background: var(--color-surface);
+    border: 1px solid var(--color-ash);
+    border-radius: var(--radius-input);
+    padding: 10px 14px;
+    font-size: 15px;
+    color: var(--color-ink);
+    outline: none;
+    transition:
+      border-color 120ms ease,
+      box-shadow 120ms ease;
+  }
+  .input::placeholder {
+    color: var(--color-smoke);
+  }
+  .input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px var(--color-accent-soft);
+  }
+
+  .container-page {
+    width: 100%;
+    max-width: 1120px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+  @media (min-width: 640px) {
+    .container-page {
+      padding-inline: 40px;
+    }
+  }
+
+  .display {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    font-size: clamp(44px, 8vw, 80px);
+    color: var(--color-ink);
+  }
 }

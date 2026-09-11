@@ -21,10 +21,7 @@ export function DeleteProjectButton({
       }}
     >
       <input type="hidden" name="id" value={projectId} />
-      <button
-        type="submit"
-        className="text-sm font-medium text-red-600 hover:underline dark:text-red-400"
-      >
+      <button type="submit" className="link text-[13px] text-danger">
         Delete
       </button>
     </form>

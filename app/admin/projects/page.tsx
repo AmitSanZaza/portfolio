@@ -8,33 +8,30 @@ export default async function AdminProjectsPage() {
   const projects = await getProjects();
 
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-12 sm:px-8">
+    <div className="container-page flex max-w-3xl flex-col gap-8 py-16">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Manage projects</h1>
-        <Link
-          href="/admin/projects/new"
-          className="rounded bg-zinc-900 px-4 py-2 text-sm font-medium text-white dark:bg-zinc-50 dark:text-zinc-900"
-        >
+        <h1 className="text-[40px] leading-[1.15]">Manage projects</h1>
+        <Link href="/admin/projects/new" className="btn btn-dark">
           New project
         </Link>
       </div>
 
       {projects.length === 0 ? (
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="text-[14px] text-smoke">
           No projects yet — add your first one.
         </p>
       ) : (
-        <ul className="flex flex-col divide-y divide-zinc-200 dark:divide-zinc-800">
+        <ul className="card flex flex-col divide-y divide-ash px-6">
           {projects.map((project) => (
             <li
               key={project.id}
-              className="flex items-center justify-between gap-4 py-3"
+              className="flex items-center justify-between gap-4 py-4"
             >
-              <span className="font-medium">{project.title}</span>
+              <span className="text-ink">{project.title}</span>
               <div className="flex items-center gap-4">
                 <Link
                   href={`/admin/projects/${project.id}/edit`}
-                  className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+                  className="link text-[13px] text-ink"
                 >
                   Edit
                 </Link>

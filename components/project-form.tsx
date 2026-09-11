@@ -30,30 +30,25 @@ export function ProjectForm({
         required
       />
 
-      <label className="flex flex-col gap-1 text-sm">
+      <label className="flex flex-col gap-2 text-[13px] text-ink">
         Description
         <textarea
           name="description"
           defaultValue={project?.description}
           required
           rows={4}
-          className="rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+          className="input"
         />
         {state?.fieldErrors.description && (
           <FieldError message={state.fieldErrors.description} />
         )}
       </label>
 
-      <label className="flex flex-col gap-1 text-sm">
+      <label className="flex flex-col gap-2 text-[13px] text-ink">
         Image
-        <input
-          type="file"
-          name="image"
-          accept="image/*"
-          className="rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
-        />
+        <input type="file" name="image" accept="image/*" className="input" />
         {project?.image_url && (
-          <span className="text-xs text-zinc-500 dark:text-zinc-400">
+          <span className="text-[12px] text-smoke">
             Leave empty to keep the current image.
           </span>
         )}
@@ -86,7 +81,7 @@ export function ProjectForm({
       />
 
       {state?.error && (
-        <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+        <p role="alert" className="text-[13px] text-danger">
           {state.error}
         </p>
       )}
@@ -94,7 +89,7 @@ export function ProjectForm({
       <button
         type="submit"
         disabled={pending}
-        className="rounded bg-zinc-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-60 dark:bg-zinc-50 dark:text-zinc-900"
+        className="btn btn-dark self-start"
       >
         {pending ? "Saving…" : submitLabel}
       </button>
@@ -120,7 +115,7 @@ function Field({
   required?: boolean;
 }) {
   return (
-    <label className="flex flex-col gap-1 text-sm">
+    <label className="flex flex-col gap-2 text-[13px] text-ink">
       {label}
       <input
         type={type}
@@ -128,7 +123,7 @@ function Field({
         defaultValue={defaultValue}
         placeholder={placeholder}
         required={required}
-        className="rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+        className="input"
       />
       {error && <FieldError message={error} />}
     </label>
@@ -137,7 +132,7 @@ function Field({
 
 function FieldError({ message }: { message: string }) {
   return (
-    <span role="alert" className="text-xs text-red-600 dark:text-red-400">
+    <span role="alert" className="text-[12px] text-danger">
       {message}
     </span>
   );

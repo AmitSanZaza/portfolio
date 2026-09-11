@@ -7,34 +7,34 @@ export default function LoginPage() {
   const [state, formAction, pending] = useActionState(login, null);
 
   return (
-    <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-4 py-16">
-      <h1 className="text-xl font-semibold">Owner login</h1>
+    <div className="container-page flex max-w-md flex-1 flex-col justify-center gap-8 py-16">
+      <h1 className="text-[40px] leading-[1.15]">Owner login</h1>
 
       <form action={formAction} className="flex flex-col gap-4">
-        <label className="flex flex-col gap-1 text-sm">
+        <label className="flex flex-col gap-2 text-[13px] text-ink">
           Email
           <input
             type="email"
             name="email"
             required
             autoComplete="email"
-            className="rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+            className="input"
           />
         </label>
 
-        <label className="flex flex-col gap-1 text-sm">
+        <label className="flex flex-col gap-2 text-[13px] text-ink">
           Password
           <input
             type="password"
             name="password"
             required
             autoComplete="current-password"
-            className="rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+            className="input"
           />
         </label>
 
         {state?.error && (
-          <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+          <p role="alert" className="text-[13px] text-danger">
             {state.error}
           </p>
         )}
@@ -42,7 +42,7 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={pending}
-          className="rounded bg-zinc-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-60 dark:bg-zinc-50 dark:text-zinc-900"
+          className="btn btn-dark self-start"
         >
           {pending ? "Signing in…" : "Sign in"}
         </button>
