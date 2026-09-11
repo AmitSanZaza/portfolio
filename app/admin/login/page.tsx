@@ -7,10 +7,10 @@ export default function LoginPage() {
   const [state, formAction, pending] = useActionState(login, null);
 
   return (
-    <div className="container-page flex max-w-md flex-1 flex-col justify-center gap-8 py-16">
+    <div className="container-page flex flex-1 flex-col justify-center gap-8 py-16">
       <h1 className="text-[40px] leading-[1.15]">Owner login</h1>
 
-      <form action={formAction} className="flex flex-col gap-4">
+      <form action={formAction} className="flex max-w-md flex-col gap-4">
         <label className="flex flex-col gap-2 text-[13px] text-ink">
           Email
           <input
@@ -18,6 +18,8 @@ export default function LoginPage() {
             name="email"
             required
             autoComplete="email"
+            inputMode="email"
+            spellCheck={false}
             className="input"
           />
         </label>

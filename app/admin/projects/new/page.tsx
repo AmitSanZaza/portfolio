@@ -6,7 +6,7 @@ export default async function NewProjectPage() {
   await requireOwnerSession();
 
   return (
-    <div className="container-page flex max-w-xl flex-col gap-8 py-16">
+    <div className="container-page flex flex-col gap-8 py-16">
       <h1 className="text-[40px] leading-[1.15]">New project</h1>
       <ProjectForm action={createProject} submitLabel="Create project" />
     </div>

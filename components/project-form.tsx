@@ -21,7 +21,7 @@ export function ProjectForm({
   const [state, formAction, pending] = useActionState(action, null);
 
   return (
-    <form action={formAction} className="flex flex-col gap-4">
+    <form action={formAction} className="flex max-w-xl flex-col gap-4">
       <Field
         label="Title"
         name="title"
@@ -58,7 +58,7 @@ export function ProjectForm({
         label="Technologies (comma-separated)"
         name="technologies"
         defaultValue={project?.technologies.join(", ")}
-        placeholder="Next.js, TypeScript, Tailwind CSS"
+        placeholder="Next.js, TypeScript, Tailwind CSS…"
         error={state?.fieldErrors.technologies}
       />
 
@@ -67,7 +67,7 @@ export function ProjectForm({
         name="demo_url"
         type="url"
         defaultValue={project?.demo_url ?? ""}
-        placeholder="https://example.com"
+        placeholder="https://example.com/…"
         error={state?.fieldErrors.demo_url}
       />
 
@@ -76,7 +76,7 @@ export function ProjectForm({
         name="source_url"
         type="url"
         defaultValue={project?.source_url ?? ""}
-        placeholder="https://github.com/you/project"
+        placeholder="https://github.com/you/project…"
         error={state?.fieldErrors.source_url}
       />
 
@@ -123,6 +123,9 @@ function Field({
         defaultValue={defaultValue}
         placeholder={placeholder}
         required={required}
+        autoComplete="off"
+        spellCheck={type === "url" ? false : undefined}
+        inputMode={type === "url" ? "url" : undefined}
         className="input"
       />
       {error && <FieldError message={error} />}

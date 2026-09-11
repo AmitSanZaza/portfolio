@@ -79,6 +79,13 @@
     font-weight: 400;
     color: var(--color-ink);
     letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  a,
+  button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   ::selection {

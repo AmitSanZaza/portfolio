@@ -5,7 +5,7 @@ export default async function SkillsPage() {
   const { skills } = await getProfileContent();
 
   return (
-    <div className="container-page max-w-3xl py-16 sm:py-24">
+    <div className="container-page py-16 sm:py-24">
       <PageHeader eyebrow="What I work with" title="Skills" />
       {skills.length === 0 ? (
         <p className="text-[14px] text-smoke">No skills listed yet.</p>

@@ -19,7 +19,7 @@ export default async function EditProjectPage({
   const updateProjectForId = updateProject.bind(null, id);
 
   return (
-    <div className="container-page flex max-w-xl flex-col gap-8 py-16">
+    <div className="container-page flex flex-col gap-8 py-16">
       <h1 className="text-[40px] leading-[1.15]">Edit project</h1>
       <ProjectForm
         action={updateProjectForId}

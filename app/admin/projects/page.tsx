@@ -8,7 +8,7 @@ export default async function AdminProjectsPage() {
   const projects = await getProjects();
 
   return (
-    <div className="container-page flex max-w-3xl flex-col gap-8 py-16">
+    <div className="container-page flex flex-col gap-8 py-16">
       <div className="flex items-center justify-between">
         <h1 className="text-[40px] leading-[1.15]">Manage projects</h1>
         <Link href="/admin/projects/new" className="btn btn-dark">
@@ -21,7 +21,7 @@ export default async function AdminProjectsPage() {
           No projects yet — add your first one.
         </p>
       ) : (
-        <ul className="card flex flex-col divide-y divide-ash px-6">
+        <ul className="card flex max-w-3xl flex-col divide-y divide-ash px-6">
           {projects.map((project) => (
             <li
               key={project.id}

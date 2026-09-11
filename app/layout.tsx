@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
@@ -22,6 +22,14 @@ export const metadata: Metadata = {
   title: "Amit Barua — Portfolio",
   description:
     "Computer science student building for the web with Next.js and TypeScript. Selected projects, skills, and contact.",
+};
+
+// Browser chrome follows the page background in both themes.
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ebe5dc" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
 };
 
 export default function RootLayout({

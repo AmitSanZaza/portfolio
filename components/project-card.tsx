@@ -32,6 +32,9 @@ export function ProjectCard({ project }: { project: Project }) {
           <img
             src={project.image_url!}
             alt={`${project.title} screenshot`}
+            width={1600}
+            height={1000}
+            loading="lazy"
             className="h-full w-full object-cover"
             onError={() => setImageFailed(true)}
           />
@@ -42,7 +45,7 @@ export function ProjectCard({ project }: { project: Project }) {
 
       <div className="flex flex-1 flex-col gap-3 px-3 pb-3 pt-5">
         <h3 className="text-[26px] leading-[1.2]">{project.title}</h3>
-        <p className="text-[14px] leading-relaxed text-graphite">
+        <p className="break-words text-[14px] leading-relaxed text-graphite">
           {project.description}
         </p>
 
