@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
+import { ThemeInit } from "@/components/theme-init";
 import "./globals.css";
 
 // Instrument Serif and JetBrains Mono are both SIL OFL — free for commercial use.
@@ -41,7 +42,12 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${instrumentSerif.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      // data-* attributes are set by ThemeInit before hydration.
+      suppressHydrationWarning
     >
+      <head>
+        <ThemeInit />
+      </head>
       <body className="flex min-h-full flex-col bg-canvas text-graphite">
         <a href="#main" className="skip-link">
           Skip to content

@@ -31,6 +31,36 @@ Two themes, same tokens. Light is the default; dark follows `prefers-color-schem
 
 Why the light canvas is darker than the reference: Monad's `#f6f3f1` is 96 % white and glares on a bright screen. `#ebe5dc` keeps the paper feel at luminance .79. Every text/background pair above is ≥ 4.5:1 in both themes; input borders ≥ 3:1.
 
+## Theme axes (user-selectable on `/design`)
+
+Three `data-*` attributes on `<html>`, set before paint by `components/theme-init.tsx` from `localStorage`, driven by `components/theme-picker.tsx`:
+
+| Axis          | Values                                                  | Effect                                                  |
+| ------------- | ------------------------------------------------------- | ------------------------------------------------------- |
+| `data-theme`  | _(absent = system)_, `light`, `dark`                    | Forces a scheme; absent follows `prefers-color-scheme`. |
+| `data-paper`  | _(absent = kraft)_, `stone` `#e7e5e1`, `sand` `#efe5d0` | Light canvas tone only. Dark is always true black.      |
+| `data-accent` | _(absent = lake)_, `clay`, `forest`, `plum`, `ink`      | The single action color, as a light/dark pair.          |
+
+Accent pairs (light canvas / black canvas) — every one ≥ 4.5:1 as button text and as a link on its canvas:
+
+| Accent | Light     | Dark      |
+| ------ | --------- | --------- |
+| lake   | `#2b59d1` | `#8fb0f5` |
+| clay   | `#a83d24` | `#f0917a` |
+| forest | `#2f6b3f` | `#8fd3a3` |
+| plum   | `#6d3a9c` | `#c9a6f2` |
+| ink    | `#1a1917` | `#f1ece5` |
+
+The rule "one accent per screen" holds whatever the accent is.
+
+## Motion
+
+- **Scroll reveal** (`components/reveal.tsx`): opacity 0→1 and 14px lift, 640ms, `cubic-bezier(.2,.7,.2,1)`, optional stagger via `--reveal-delay`. Fires once, on first intersection — or immediately if the element is already above the viewport (back-navigation, anchor jumps). Gated on the `.js` class so no-JS users see everything.
+- **Card lift**: `translateY(-3px)` on hover, 220ms. Transform only, no shadow.
+- **Anchor scroll**: `scroll-behavior: smooth` on `html`.
+- **Reduced motion**: every transition and animation collapses to 0.01ms and reveals render visible.
+- Never animate width/height/layout; never `transition: all`.
+
 ## Typography
 
 | Font                 | Use                                                          | Weights        | Licence                           |

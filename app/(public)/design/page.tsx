@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/page-header";
+import { Reveal } from "@/components/reveal";
+import { ThemePicker } from "@/components/theme-picker";
 
 export const metadata: Metadata = {
   title: "Design system — Amit Barua",
@@ -59,11 +61,11 @@ function Section({
 }) {
   return (
     <section className="border-t border-ash py-14 first:border-t-0">
-      <div className="mb-8 flex flex-col gap-2">
+      <Reveal className="mb-8 flex flex-col gap-2">
         <p className="eyebrow">{eyebrow}</p>
         <h2 className="text-[28px] leading-[1.2]">{title}</h2>
-      </div>
-      {children}
+      </Reveal>
+      <Reveal delay={100}>{children}</Reveal>
     </section>
   );
 }
@@ -79,6 +81,10 @@ export default function DesignPage() {
         truth: <code className="text-ink">DESIGN.md</code> at the repo root.
       </p>
 
+      <Reveal delay={120} className="mb-14">
+        <ThemePicker />
+      </Reveal>
+
       <Section eyebrow="01" title="Colors">
         <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {colors.map((c) => (
@@ -89,7 +95,7 @@ export default function DesignPage() {
               />
               <div className="flex flex-col gap-1 p-4 text-[12px]">
                 <span className="text-ink">{c.name}</span>
-                <span className="text-smoke">{c.hex} · light</span>
+                <span className="text-smoke">{c.hex} · default light</span>
                 <span className="pt-1 text-graphite">{c.role}</span>
               </div>
             </li>

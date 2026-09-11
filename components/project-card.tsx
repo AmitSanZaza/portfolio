@@ -10,7 +10,7 @@ export function ProjectCard({ project }: { project: Project }) {
 
   return (
     <article
-      className={`card relative flex flex-col overflow-hidden p-3 transition-colors ${
+      className={`card card-lift relative flex h-full flex-col overflow-hidden p-3 ${
         primaryUrl ? "hover:border-ink" : ""
       }`}
     >
