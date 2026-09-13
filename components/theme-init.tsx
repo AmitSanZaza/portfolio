@@ -14,6 +14,18 @@ const script = `
     if (p === "stone" || p === "sand") d.setAttribute("data-paper", p);
     if (a === "clay" || a === "forest" || a === "plum" || a === "ink") d.setAttribute("data-accent", a);
   } catch (e) {}
+  // Browser chrome follows the canvas actually in use, not just the OS scheme.
+  function syncThemeColor() {
+    var c = getComputedStyle(d).getPropertyValue("--color-canvas").trim();
+    if (!c) return;
+    document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) {
+      m.removeAttribute("media");
+      m.setAttribute("content", c);
+    });
+  }
+  // Twice: metadata can still be streaming into <head> at DOMContentLoaded.
+  document.addEventListener("DOMContentLoaded", syncThemeColor);
+  window.addEventListener("load", syncThemeColor);
 })();
 `;
 

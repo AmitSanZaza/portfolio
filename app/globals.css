@@ -72,7 +72,7 @@
   --accent-l-deep: #000000;
   --accent-l-soft: #d6d1ca;
   --accent-d: #f1ece5;
-  --accent-d-deep: #ffffff;
+  --accent-d-deep: #faf7f2;
   --accent-d-soft: #3a3734;
 }
 
@@ -134,6 +134,8 @@
   html {
     color-scheme: light dark;
     scroll-behavior: smooth;
+    /* Sticky nav is ~77px tall: anchors and keyboard focus land below it. */
+    scroll-padding-top: 96px;
     /* Scrollbar: thin, in the palette. Standard properties first. */
     scrollbar-width: thin;
     scrollbar-color: var(--color-ash-strong) transparent;
@@ -228,6 +230,13 @@
   }
   .link:hover {
     color: var(--color-accent);
+  }
+  /* A link standing alone (card footer, admin row, site footer) — not in
+     prose — gets a 24px hit area without changing its visual size. */
+  .link-block {
+    display: inline-block;
+    padding-block: 2px;
+    margin-block: -2px;
   }
 
   .nav-link {
@@ -360,6 +369,9 @@
 
   /* ------------------------------------------------------------------
      Motion — Apple-style scroll choreography.
+     NB: view() resolves against the nearest scroll container, and
+     `overflow: hidden` creates one — use `overflow: clip` on any ancestor
+     that must clip (cards), or the animation silently never runs.
      Fallback (no scroll-driven animations): reveal once on intersection,
      toggled by components/reveal.tsx. Modern browsers: the same elements
      are scrubbed by their position in the viewport instead.
@@ -400,12 +412,14 @@
       animation-timeline: view();
       animation-range: entry 0% entry 80%;
     }
-    /* Prose lights up word by word as it crosses the lower third. */
+    /* Prose lights up word by word as it clears the bottom band. The range
+       ends early (20%) so the last paragraph of a short page — the one that
+       carries the ask — still reaches full ink with little scroll. */
     .js .scrub-word {
       color: var(--color-smoke);
       animation: ink-in linear both;
       animation-timeline: view();
-      animation-range: cover 20% cover 40%;
+      animation-range: cover 0% cover 20%;
     }
   }
 
@@ -507,7 +521,7 @@
     display: grid;
     grid-template-columns: 3fr 2fr 1fr 2fr;
     height: 44px;
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
     border: 1px solid var(--color-ash);
   }

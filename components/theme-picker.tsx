@@ -68,6 +68,14 @@ function setAxis(
   }
 }
 function commit() {
+  // Keep the browser chrome on the canvas color that is now in effect.
+  const canvas = getComputedStyle(document.documentElement)
+    .getPropertyValue("--color-canvas")
+    .trim();
+  document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
+    m.removeAttribute("media");
+    m.setAttribute("content", canvas);
+  });
   window.dispatchEvent(new Event(EVENT));
 }
 

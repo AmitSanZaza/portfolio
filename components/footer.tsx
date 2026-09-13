@@ -7,12 +7,12 @@ export async function Footer() {
   return (
     <footer className="border-t border-ash">
       <div className="container-page flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-8 text-[13px] text-smoke">
-        <span>© {new Date().getFullYear()} Amit Barua</span>
+        <span>©&nbsp;{new Date().getFullYear()} Amit Barua</span>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-          <a href={contactMethod.href} className="link">
+          <a href={contactMethod.href} className="link link-block">
             {contactMethod.label}
           </a>
-          <Link href="/design" className="link">
+          <Link href="/design" className="link link-block">
             Design system
           </Link>
         </div>

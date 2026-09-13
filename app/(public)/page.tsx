@@ -43,10 +43,7 @@ export default async function HomePage() {
       <hr className="border-ash" />
 
       {/* Projects — the one thing the page exists to show. */}
-      <section
-        id="projects"
-        className="container-page scroll-mt-28 py-16 sm:py-24"
-      >
+      <section id="projects" className="container-page py-16 sm:py-24">
         <div className="grid gap-10 lg:grid-cols-[260px_1fr] lg:gap-16">
           <Reveal className="pin-aside flex flex-col gap-3">
             <p className="eyebrow">Selected work</p>
@@ -76,10 +73,7 @@ export default async function HomePage() {
       <hr className="border-ash" />
 
       {/* Contact — one ask, then the page ends. */}
-      <section
-        id="contact"
-        className="container-page scroll-mt-28 py-16 sm:py-24"
-      >
+      <section id="contact" className="container-page py-16 sm:py-24">
         <Reveal className="card flex flex-col gap-6 px-6 py-12 sm:px-12 sm:py-16">
           <p className="eyebrow">Building something?</p>
           <h2 className="max-w-2xl text-[40px] leading-[1.15] sm:text-[48px]">
@@ -90,7 +84,7 @@ export default async function HomePage() {
           </p>
           <div>
             <a href={contactMethod.href} className="btn btn-primary">
-              {contactMethod.label}
+              Email me <span aria-hidden>→</span>
             </a>
           </div>
         </Reveal>

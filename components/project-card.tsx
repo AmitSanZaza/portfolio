@@ -1,17 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Project } from "@/lib/types";
 
 export function ProjectCard({ project }: { project: Project }) {
   const [imageFailed, setImageFailed] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
   const showImage = project.image_url && !imageFailed;
   const primaryUrl = project.demo_url || project.source_url;
 
+  // An image that 404s before hydration never fires onError, so check the
+  // loaded state once on mount as well.
+  useEffect(() => {
+    const img = imgRef.current;
+    if (img && img.complete && img.naturalWidth === 0) setImageFailed(true);
+  }, []);
+
   return (
     <article
-      className={`card card-lift relative flex h-full flex-col overflow-hidden p-3 ${
-        primaryUrl ? "hover:border-ink" : ""
+      // overflow-clip, not hidden: hidden would make the card the scroll
+      // container for the tile's view() timeline (see globals.css).
+      className={`card relative flex h-full flex-col overflow-clip p-3 ${
+        primaryUrl ? "card-lift hover:border-ink" : ""
       }`}
     >
       {primaryUrl && (
@@ -19,7 +29,7 @@ export function ProjectCard({ project }: { project: Project }) {
           href={primaryUrl}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`Open ${project.title}`}
+          aria-label={`Open ${project.title} (new tab)`}
           className="absolute inset-0 z-0"
         />
       )}
@@ -30,6 +40,7 @@ export function ProjectCard({ project }: { project: Project }) {
           // Supabase Storage domain in next.config.ts for Next/Image.
           // eslint-disable-next-line @next/next/no-img-element
           <img
+            ref={imgRef}
             src={project.image_url!}
             alt={`${project.title} screenshot`}
             width={1600}
@@ -44,7 +55,9 @@ export function ProjectCard({ project }: { project: Project }) {
       </div>
 
       <div className="flex flex-1 flex-col gap-3 px-3 pb-3 pt-5">
-        <h3 className="text-[26px] leading-[1.2]">{project.title}</h3>
+        <h3 className="break-words text-[26px] leading-[1.2]">
+          {project.title}
+        </h3>
         <p className="break-words text-[14px] leading-relaxed text-graphite">
           {project.description}
         </p>
@@ -66,7 +79,7 @@ export function ProjectCard({ project }: { project: Project }) {
                 href={project.demo_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link text-ink"
+                className="link link-block text-ink"
               >
                 Live demo
               </a>
@@ -76,7 +89,7 @@ export function ProjectCard({ project }: { project: Project }) {
                 href={project.source_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link text-ink"
+                className="link link-block text-ink"
               >
                 Source code
               </a>

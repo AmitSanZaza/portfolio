@@ -13,9 +13,14 @@ export default async function ContactPage() {
           Building something and need a developer? Write to me — I reply to
           every message.
         </p>
-        <a href={contactMethod.href} className="btn btn-primary mt-8">
-          {contactMethod.label}
-        </a>
+        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <a href={contactMethod.href} className="btn btn-primary">
+            Email me <span aria-hidden>→</span>
+          </a>
+          <a href={contactMethod.href} className="link link-block text-[14px]">
+            {contactMethod.label}
+          </a>
+        </div>
       </Reveal>
     </div>
   );

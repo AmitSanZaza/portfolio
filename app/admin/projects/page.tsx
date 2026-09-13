@@ -9,7 +9,7 @@ export default async function AdminProjectsPage() {
 
   return (
     <div className="container-page flex flex-col gap-8 py-16">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-[40px] leading-[1.15]">Manage projects</h1>
         <Link href="/admin/projects/new" className="btn btn-dark">
           New project
@@ -27,11 +27,13 @@ export default async function AdminProjectsPage() {
               key={project.id}
               className="flex items-center justify-between gap-4 py-4"
             >
-              <span className="text-ink">{project.title}</span>
+              <span className="min-w-0 break-words text-ink">
+                {project.title}
+              </span>
               <div className="flex items-center gap-4">
                 <Link
                   href={`/admin/projects/${project.id}/edit`}
-                  className="link text-[13px] text-ink"
+                  className="link link-block text-[13px] text-ink"
                 >
                   Edit
                 </Link>

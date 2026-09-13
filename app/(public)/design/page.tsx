@@ -42,7 +42,7 @@ const rules = {
   ],
   dont: [
     "No bold headings. No sans-serif body text.",
-    "No #ffffff, no gradients, no glassmorphism, no glow, no drop shadow.",
+    "No #ffffff, no gradients, no glow, no drop shadow. No glassmorphism on surfaces — the frosted sticky nav is the one exception.",
     "No blue outside the single primary action. No second accent.",
     "No radius under 12px. No sharp corners.",
     "No emoji as icons. No stock imagery. No three-feature-card hero grid.",
@@ -129,7 +129,7 @@ export default function DesignPage() {
               Body copy is set in a monospace face on purpose: it reads as
               written by someone who spends the day in an editor. Inline links
               carry a{" "}
-              <a href="#" className="link">
+              <a href="#top" className="link">
                 persistent underline
               </a>
               , never a hover-only one.
@@ -182,12 +182,20 @@ export default function DesignPage() {
               Input
               <input
                 className="input"
-                placeholder="12px radius, accent focus ring"
+                name="specimen"
+                autoComplete="off"
+                placeholder="12px radius, accent focus ring…"
               />
             </label>
             <label className="flex flex-col gap-2 text-[13px] text-ink">
               Textarea
-              <textarea className="input" rows={3} placeholder="Same rules" />
+              <textarea
+                className="input"
+                name="specimen-textarea"
+                autoComplete="off"
+                rows={3}
+                placeholder="Same rules…"
+              />
             </label>
           </div>
         </div>

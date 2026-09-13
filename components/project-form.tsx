@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import type { ProjectFormState } from "@/app/actions/projects";
 import type { Project } from "@/lib/types";
 
@@ -19,9 +19,32 @@ export function ProjectForm({
   submitLabel: string;
 }) {
   const [state, formAction, pending] = useActionState(action, null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [dirty, setDirty] = useState(false);
+
+  // Server-side validation failed: put the cursor on the first bad field.
+  useEffect(() => {
+    if (!state?.fieldErrors) return;
+    formRef.current
+      ?.querySelector<HTMLElement>('[aria-invalid="true"]')
+      ?.focus();
+  }, [state]);
+
+  // Unsaved edits: warn before the tab closes or navigates away.
+  useEffect(() => {
+    if (!dirty || pending) return;
+    const warn = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty, pending]);
 
   return (
-    <form action={formAction} className="flex max-w-xl flex-col gap-4">
+    <form
+      ref={formRef}
+      action={formAction}
+      onChange={() => setDirty(true)}
+      className="flex max-w-xl flex-col gap-4"
+    >
       <Field
         label="Title"
         name="title"
@@ -37,6 +60,8 @@ export function ProjectForm({
           defaultValue={project?.description}
           required
           rows={4}
+          autoComplete="off"
+          aria-invalid={state?.fieldErrors.description ? true : undefined}
           className="input"
         />
         {state?.fieldErrors.description && (
@@ -123,6 +148,7 @@ function Field({
         defaultValue={defaultValue}
         placeholder={placeholder}
         required={required}
+        aria-invalid={error ? true : undefined}
         autoComplete="off"
         spellCheck={type === "url" ? false : undefined}
         inputMode={type === "url" ? "url" : undefined}

@@ -43,13 +43,13 @@ Three `data-*` attributes on `<html>`, set before paint by `components/theme-ini
 
 Accent pairs (light canvas / black canvas) — every one ≥ 4.5:1 as button text and as a link on its canvas:
 
-| Accent | Light     | Dark      |
-| ------ | --------- | --------- |
-| lake   | `#2b59d1` | `#8fb0f5` |
-| clay   | `#a83d24` | `#f0917a` |
-| forest | `#2f6b3f` | `#8fd3a3` |
-| plum   | `#6d3a9c` | `#c9a6f2` |
-| ink    | `#1a1917` | `#f1ece5` |
+| Accent | Light     | Dark                                      |
+| ------ | --------- | ----------------------------------------- |
+| lake   | `#2b59d1` | `#8fb0f5`                                 |
+| clay   | `#a83d24` | `#f0917a`                                 |
+| forest | `#2f6b3f` | `#8fd3a3`                                 |
+| plum   | `#6d3a9c` | `#c9a6f2`                                 |
+| ink    | `#1a1917` | `#f1ece5` (hover `#faf7f2`, never `#fff`) |
 
 The rule "one accent per screen" holds whatever the accent is.
 
@@ -57,17 +57,17 @@ The rule "one accent per screen" holds whatever the accent is.
 
 Scroll-linked, not time-linked: elements are scrubbed by their position in the viewport via CSS `animation-timeline: view()`. Browsers without it fall back to a one-shot reveal on intersection (`components/reveal.tsx`). Everything is gated on the `.js` class (no-JS sees all content) and flattened under `prefers-reduced-motion`.
 
-| Pattern                | Where                                   | How                                                                                              |
-| ---------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| **Frosted sticky nav** | `header.nav-frosted`                    | `position: sticky`, canvas at 80 % over `saturate(180%) blur(20px)`. Anchors use `scroll-mt-28`. |
-| **Masthead recedes**   | Home hero `.hero-recede`                | Fades to 0 and scales to .96 with a 32 px lift over its exit range.                              |
-| **Enter-up**           | Every `[data-reveal]`                   | Opacity 0→1, 28 px rise, scale .985→1 over `entry 0%–60%`.                                       |
-| **Tile settle**        | Card imagery `.tile-settle`             | Scale 1.06→1 over `entry 0%–80%`.                                                                |
-| **Pinned aside**       | Projects header `.pin-aside`            | `sticky; top: 112px` beside the scrolling grid (≥ 1024 px).                                      |
-| **Scrub text**         | About bio (`components/scrub-text.tsx`) | Each word goes smoke→ink as it crosses `cover 20%–40%`.                                          |
-| **Card lift**          | `.card-lift:hover`                      | `translateY(-3px)`, 220 ms. No shadow.                                                           |
+| Pattern                | Where                                   | How                                                                                                                                                      |
+| ---------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Frosted sticky nav** | `header.nav-frosted`                    | `position: sticky`, canvas at 80 % over `saturate(180%) blur(20px)`. `html { scroll-padding-top: 96px }` keeps anchors _and_ keyboard focus clear of it. |
+| **Masthead recedes**   | Home hero `.hero-recede`                | Fades to 0 and scales to .96 with a 32 px lift over its exit range.                                                                                      |
+| **Enter-up**           | Every `[data-reveal]`                   | Opacity 0→1, 28 px rise, scale .985→1 over `entry 0%–60%`.                                                                                               |
+| **Tile settle**        | Card imagery `.tile-settle`             | Scale 1.06→1 over `entry 0%–80%`.                                                                                                                        |
+| **Pinned aside**       | Projects header `.pin-aside`            | `sticky; top: 112px` beside the scrolling grid (≥ 1024 px).                                                                                              |
+| **Scrub text**         | About bio (`components/scrub-text.tsx`) | Each word goes smoke→ink over `cover 0%–20%` — short enough that a one-screen page still ends in full ink.                                               |
+| **Card lift**          | `.card-lift:hover`                      | `translateY(-3px)`, 220 ms. No shadow.                                                                                                                   |
 
-Rules: transform, opacity and color only; never width/height/layout; never `transition: all`; one choreographed element per view (hero _or_ pinned header, not both fighting).
+Rules: transform, opacity and color only; never width/height/layout; never `transition: all`; one choreographed element per view (hero _or_ pinned header, not both fighting). `view()` resolves against the nearest scroll container and `overflow: hidden` creates one — clip with `overflow: clip` (cards do), or the animation silently never runs.
 
 ## Typography
 
@@ -93,15 +93,15 @@ Type scale (minor third, 16px base):
 
 - Base unit 8px. Page max-width 1120px, side padding 20px mobile / 40px desktop.
 - Section gap 96px desktop / 64px mobile. Card padding 24–32px. Element gap 8–16px.
-- Radius: pills `9999px` (buttons, tags), cards `24px`, image frames `16px`, inputs `12px`. Nothing under 12px.
-- Elevation: **no box-shadow anywhere.** Use `ash` hairlines and the canvas → surface tonal step.
+- Radius: pills `9999px` (buttons, tags), cards `24px`, image frames `16px`, inputs and palette strips `12px`. Nothing under 12px.
+- Elevation: **no box-shadow as elevation.** Use `ash` hairlines and the canvas → surface tonal step. Inset rings for selected/focus states (input focus, pressed palette card) are the only `box-shadow` allowed.
 
 ## Components
 
 - **Primary pill button** — `accent` fill, `surface` text, mono 13px uppercase +0.08em, padding 12px 24px, radius 9999. Hover `accent-deep`. Trailing `→` allowed. **One per screen.**
 - **Dark pill button** — `ink` fill, `canvas` text, same shape. For admin / non-marketing actions.
 - **Ghost pill button** — transparent, 1px `ash` border, `ink` text. Hover: border becomes `ink`.
-- **Inline link** — inherits color, persistent 1px underline, underline offset 3px. Hover: color `accent`. Never underline-on-hover-only.
+- **Inline link** — inherits color, persistent 1px underline, underline offset 3px. Hover: color `accent`. Never underline-on-hover-only. Standing alone (card footer, admin row, site footer) add `.link-block` for a ≥ 24px hit area.
 - **Nav link** — mono 12px uppercase, `smoke`, hover `ink`, no underline, 8px vertical padding (≥ 24px hit area).
 - **Card** — `surface` fill, 1px `ash` border, radius 24, padding 24. Title serif 22–28px, body mono 15px. Hover and focus-within: border `ink`.
 - **Tag** — 1px `ash` border, transparent fill, mono 12px uppercase, radius 9999, padding 4px 10px.
@@ -124,7 +124,7 @@ Type scale (minor third, 16px base):
 ## Don't
 
 - No bold headings, no sans-serif body text.
-- No `#ffffff`, no gradients, no glassmorphism, no glow, no drop shadow.
+- No `#ffffff`, no gradients, no glow, no drop shadow. No glassmorphism on surfaces — the frosted sticky nav is the one deliberate exception.
 - No blue outside the single primary action. No second accent color.
 - No radius under 12px. No sharp corners.
 - No emoji as icons. No stock imagery. No three-feature-card hero grid.

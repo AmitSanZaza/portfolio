@@ -8,7 +8,7 @@ export default async function AboutPage() {
 
   return (
     <div className="container-page py-16 sm:py-24">
-      <PageHeader eyebrow="Who's behind this" title="About" />
+      <PageHeader eyebrow="Who’s behind this" title="About" />
       <Reveal delay={120}>
         <ScrubText
           text={bio}
