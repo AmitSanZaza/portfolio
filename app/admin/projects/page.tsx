@@ -18,7 +18,7 @@ export default async function AdminProjectsPage() {
 
       {projects.length === 0 ? (
         <p className="text-[14px] text-smoke">
-          No projects yet — add your first one.
+          No projects yet. Add the first one.
         </p>
       ) : (
         <ul className="card flex max-w-3xl flex-col divide-y divide-ash px-6">

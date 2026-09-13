@@ -49,14 +49,14 @@ export default async function HomePage() {
             <p className="eyebrow">Selected work</p>
             <h2 className="text-[40px] leading-[1.15]">Projects</h2>
             <p className="max-w-[24ch] text-[14px] text-smoke">
-              Built end to end, shipped, and open to click around.
+              Deployed, with the stack listed and the source linked.
             </p>
           </Reveal>
 
           {projects.length === 0 ? (
             <EmptyState
               title="No projects yet"
-              description="Check back soon — projects showcased here are on their way."
+              description="The first projects land here soon."
             />
           ) : (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">

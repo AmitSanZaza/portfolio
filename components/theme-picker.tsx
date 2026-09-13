@@ -102,7 +102,7 @@ export function ThemePicker() {
       <div className="flex flex-col gap-2">
         <p className="eyebrow">Pick a palette</p>
         <h2 className="text-[28px] leading-[1.2]">
-          Click one — the whole site takes it
+          Click one. The whole site takes it.
         </h2>
         <p className="max-w-xl text-[14px] text-graphite">
           Each palette is a paper tone plus the one accent color. Saved in this

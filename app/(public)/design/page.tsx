@@ -33,8 +33,8 @@ const colors = [
 
 const rules = {
   do: [
-    "Headings in Instrument Serif, weight 400 — size carries the weight.",
-    "Body, nav, buttons and tags in JetBrains Mono — monospace is the voice.",
+    "Headings in Instrument Serif at weight 400: size carries the weight.",
+    "Body, nav, buttons and tags in JetBrains Mono: monospace is the voice.",
     "Parchment canvas, surface one tonal step lighter, hairline borders, zero shadows.",
     "Exactly one accent element per screen: the thing the visitor should do.",
     "One idea and one action per section; each fits roughly one viewport.",
@@ -42,7 +42,7 @@ const rules = {
   ],
   dont: [
     "No bold headings. No sans-serif body text.",
-    "No #ffffff, no gradients, no glow, no drop shadow. No glassmorphism on surfaces — the frosted sticky nav is the one exception.",
+    "No #ffffff, no gradients, no glow, no drop shadow. No glassmorphism on surfaces; the frosted sticky nav is the one exception.",
     "No blue outside the single primary action. No second accent.",
     "No radius under 12px. No sharp corners.",
     "No emoji as icons. No stock imagery. No three-feature-card hero grid.",
@@ -75,10 +75,10 @@ export default function DesignPage() {
     <div id="top" className="container-page py-16 sm:py-24">
       <PageHeader eyebrow="How this site is built" title="Design system" />
       <p className="mb-6 max-w-2xl text-[17px] leading-relaxed">
-        A developer&apos;s field notebook on warm paper. Derived from two
-        references — Monad for the parchment-serif-mono voice, Anthropic for
-        tonal elevation and persistent underlines — then made our own. Source of
-        truth: <code className="text-ink">DESIGN.md</code> at the repo root.
+        A developer’s field notebook on warm paper. Two references, not cloned:
+        Monad for the parchment, serif and mono voice; Anthropic for tonal
+        elevation and persistent underlines. Source of truth:{" "}
+        <code className="text-ink">DESIGN.md</code> at the repo root.
       </p>
 
       <Reveal delay={120} className="mb-14">

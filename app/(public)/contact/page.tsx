@@ -10,8 +10,8 @@ export default async function ContactPage() {
       <PageHeader eyebrow="One email away" title="Contact" />
       <Reveal delay={120}>
         <p className="max-w-xl text-[17px] leading-relaxed text-graphite">
-          Building something and need a developer? Write to me — I reply to
-          every message.
+          Say what you are building and where you are stuck. A few lines are
+          enough.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
           <a href={contactMethod.href} className="btn btn-primary">
