@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import { getProfileContent } from "@/lib/profile-content";
+
+export const metadata: Metadata = {
+  title: "About",
+};
 
 export default async function AboutPage() {
   const { bio } = await getProfileContent();

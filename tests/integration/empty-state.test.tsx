@@ -14,3 +14,19 @@ describe("Home page empty state", () => {
     expect(screen.getByText("No projects yet")).toBeInTheDocument();
   });
 });
+
+describe("Home page when projects can't be loaded", () => {
+  it("keeps the intro and shows an unavailable message", async () => {
+    const { getProjects } = await import("@/app/actions/projects");
+    vi.mocked(getProjects).mockRejectedValueOnce(new Error("db down"));
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const { default: HomePage } = await import("@/app/(public)/page");
+
+    render(await HomePage());
+
+    expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
+    expect(
+      screen.getByText("Projects are temporarily unavailable"),
+    ).toBeInTheDocument();
+  });
+});

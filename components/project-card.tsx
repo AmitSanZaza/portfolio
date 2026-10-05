@@ -11,9 +11,7 @@ export function ProjectCard({ project }: { project: Project }) {
   return (
     <article
       className={`relative flex flex-col overflow-hidden rounded-lg border border-zinc-200 transition-colors dark:border-zinc-800 ${
-        primaryUrl
-          ? "hover:border-zinc-400 dark:hover:border-zinc-600"
-          : ""
+        primaryUrl ? "hover:border-zinc-400 dark:hover:border-zinc-600" : ""
       }`}
     >
       {primaryUrl && (
@@ -34,6 +32,8 @@ export function ProjectCard({ project }: { project: Project }) {
           <img
             src={project.image_url!}
             alt={`${project.title} screenshot`}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover"
             onError={() => setImageFailed(true)}
           />

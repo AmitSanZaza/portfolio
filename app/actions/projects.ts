@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { requireOwnerSession } from "@/lib/auth/session";
 import {
+  ALLOWED_IMAGE_TYPES,
+  validateImage,
   validateProject,
   type ProjectFieldErrors,
 } from "@/lib/validation/project";
@@ -60,8 +62,12 @@ function parseProjectFormData(formData: FormData) {
   };
 }
 
+const IMAGE_BUCKET = "project-images";
+
+type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
+
 async function uploadImageIfProvided(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: SupabaseServerClient,
   formData: FormData,
 ): Promise<string | undefined> {
   const file = formData.get("image");
@@ -69,9 +75,16 @@ async function uploadImageIfProvided(
     return undefined;
   }
 
-  const path = `${crypto.randomUUID()}-${file.name}`;
+  const invalid = validateImage(file);
+  if (invalid) {
+    throw new Error(invalid);
+  }
+
+  // Never reuse the client-supplied filename: it can contain characters that
+  // break URLs or collide. The extension comes from the validated MIME type.
+  const path = `${crypto.randomUUID()}.${ALLOWED_IMAGE_TYPES[file.type]}`;
   const { error } = await supabase.storage
-    .from("project-images")
+    .from(IMAGE_BUCKET)
     .upload(path, file, { contentType: file.type });
 
   if (error) {
@@ -80,13 +93,28 @@ async function uploadImageIfProvided(
 
   const {
     data: { publicUrl },
-  } = supabase.storage.from("project-images").getPublicUrl(path);
+  } = supabase.storage.from(IMAGE_BUCKET).getPublicUrl(path);
 
   return publicUrl;
 }
 
+// Best-effort removal of an image this app uploaded, so replaced or deleted
+// projects don't leave orphaned files in Storage. Failures are ignored: a
+// stray file is harmless, a failed save because of it would not be.
+async function removeStoredImage(
+  supabase: SupabaseServerClient,
+  publicUrl: string | null | undefined,
+) {
+  const marker = `/storage/v1/object/public/${IMAGE_BUCKET}/`;
+  const index = publicUrl?.indexOf(marker) ?? -1;
+  if (!publicUrl || index === -1) return;
+
+  const path = decodeURIComponent(publicUrl.slice(index + marker.length));
+  await supabase.storage.from(IMAGE_BUCKET).remove([path]);
+}
+
 async function nextDisplayOrder(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: SupabaseServerClient,
 ): Promise<number> {
   const { data } = await supabase
     .from("projects")
@@ -130,6 +158,7 @@ export async function createProject(
   });
 
   if (error) {
+    await removeStoredImage(supabase, image_url);
     return {
       fieldErrors: {},
       error: `Failed to save project: ${error.message}`,
@@ -154,6 +183,10 @@ export async function updateProject(
   }
 
   const supabase = await createClient();
+  const existing = await getProject(id);
+  if (!existing) {
+    return { fieldErrors: {}, error: "This project no longer exists." };
+  }
 
   let image_url: string | undefined;
   try {
@@ -174,10 +207,15 @@ export async function updateProject(
     .eq("id", id);
 
   if (error) {
+    await removeStoredImage(supabase, image_url);
     return {
       fieldErrors: {},
       error: `Failed to save project: ${error.message}`,
     };
+  }
+
+  if (image_url) {
+    await removeStoredImage(supabase, existing.image_url);
   }
 
   revalidatePath("/");
@@ -192,7 +230,18 @@ export async function deleteProject(formData: FormData): Promise<void> {
   if (!id) return;
 
   const supabase = await createClient();
-  await supabase.from("projects").delete().eq("id", id);
+  const { data: deleted, error } = await supabase
+    .from("projects")
+    .delete()
+    .eq("id", id)
+    .select("image_url")
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`Failed to delete project: ${error.message}`);
+  }
+
+  await removeStoredImage(supabase, deleted?.image_url);
 
   revalidatePath("/");
   revalidatePath("/admin/projects");

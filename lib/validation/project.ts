@@ -1,10 +1,15 @@
 import { z } from "zod";
 
 // Treats an empty string (an untouched optional form field) as "not provided".
+// Only http(s) is allowed: these values become link hrefs, and z.url() alone
+// accepts schemes like javascript: or data:.
 const optionalUrl = z.preprocess(
   (value) => (value === "" ? undefined : value),
   z
-    .url({ message: "Must be a valid URL, e.g. https://example.com" })
+    .url({
+      protocol: /^https?$/,
+      message: "Must be a valid http(s) URL, e.g. https://example.com",
+    })
     .optional(),
 );
 
@@ -28,6 +33,8 @@ export const projectSchema = z.object({
         .max(40, "A technology tag must be 40 characters or fewer"),
     )
     .max(20, "Add at most 20 technology tags")
+    // Duplicate tags would render twice and collide as React keys.
+    .transform((tags) => [...new Set(tags)])
     .default([]),
   demo_url: optionalUrl,
   source_url: optionalUrl,
@@ -55,4 +62,25 @@ export function validateProject(
     }
   }
   return { success: false, fieldErrors };
+}
+
+export const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
+
+export const ALLOWED_IMAGE_TYPES: Record<string, string> = {
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "image/webp": "webp",
+  "image/gif": "gif",
+  "image/avif": "avif",
+};
+
+// Returns an error message, or null if the file is an acceptable image.
+export function validateImage(file: { type: string; size: number }) {
+  if (!(file.type in ALLOWED_IMAGE_TYPES)) {
+    return "Image must be a PNG, JPEG, WebP, GIF, or AVIF file.";
+  }
+  if (file.size > MAX_IMAGE_BYTES) {
+    return "Image must be 4 MB or smaller.";
+  }
+  return null;
 }

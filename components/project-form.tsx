@@ -49,14 +49,13 @@ export function ProjectForm({
         <input
           type="file"
           name="image"
-          accept="image/*"
+          accept="image/png,image/jpeg,image/webp,image/gif,image/avif"
           className="rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
         />
-        {project?.image_url && (
-          <span className="text-xs text-zinc-500 dark:text-zinc-400">
-            Leave empty to keep the current image.
-          </span>
-        )}
+        <span className="text-xs text-zinc-500 dark:text-zinc-400">
+          PNG, JPEG, WebP, GIF, or AVIF, up to 4 MB.
+          {project?.image_url && " Leave empty to keep the current image."}
+        </span>
       </label>
 
       <Field
