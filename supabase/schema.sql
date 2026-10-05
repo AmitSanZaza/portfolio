@@ -34,8 +34,42 @@ create trigger projects_set_updated_at
   for each row
   execute function public.set_updated_at();
 
--- Row Level Security (FR-011 / SC-005): anyone can read, only an authenticated
--- (the single owner) user can write.
+-- Site owner(s). Supabase lets anyone sign up with the public anon key unless
+-- sign-ups are disabled, so "authenticated" alone is NOT enough to gate writes
+-- (FR-011 / SC-005). Only users listed here may modify content. Add yourself
+-- once, after creating your user in Authentication > Users:
+--   insert into public.site_owners (user_id)
+--   select id from auth.users where email = 'you@example.com';
+create table if not exists public.site_owners (
+  user_id uuid primary key references auth.users (id) on delete cascade
+);
+
+alter table public.site_owners enable row level security;
+
+drop policy if exists "Owners can see their own row" on public.site_owners;
+create policy "Owners can see their own row"
+  on public.site_owners for select
+  to authenticated
+  using (user_id = (select auth.uid()));
+
+-- security definer so policies can call it without the caller needing read
+-- access to site_owners; search_path pinned to avoid hijacking.
+create or replace function public.is_site_owner()
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select exists (
+    select 1 from public.site_owners where user_id = (select auth.uid())
+  );
+$$;
+
+revoke all on function public.is_site_owner() from public;
+grant execute on function public.is_site_owner() to authenticated, anon;
+
+-- Row Level Security: anyone can read, only the site owner can write.
 alter table public.projects enable row level security;
 
 drop policy if exists "Projects are publicly readable" on public.projects;
@@ -44,20 +78,23 @@ create policy "Projects are publicly readable"
   using (true);
 
 drop policy if exists "Only authenticated users can insert projects" on public.projects;
-create policy "Only authenticated users can insert projects"
+drop policy if exists "Only the owner can insert projects" on public.projects;
+create policy "Only the owner can insert projects"
   on public.projects for insert
   to authenticated
-  with check (true);
+  with check ((select public.is_site_owner()));
 
 drop policy if exists "Only authenticated users can update projects" on public.projects;
-create policy "Only authenticated users can update projects"
+drop policy if exists "Only the owner can update projects" on public.projects;
+create policy "Only the owner can update projects"
   on public.projects for update
   to authenticated
-  using (true)
-  with check (true);
+  using ((select public.is_site_owner()))
+  with check ((select public.is_site_owner()));
 
 drop policy if exists "Only authenticated users can delete projects" on public.projects;
-create policy "Only authenticated users can delete projects"
+drop policy if exists "Only the owner can delete projects" on public.projects;
+create policy "Only the owner can delete projects"
   on public.projects for delete
   to authenticated
-  using (true);
+  using ((select public.is_site_owner()));

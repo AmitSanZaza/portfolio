@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
 import { getProfileContent } from "@/lib/profile-content";
 import { PageHeader } from "@/components/page-header";
 import { Reveal } from "@/components/reveal";
 import { ScrubText } from "@/components/scrub-text";
+
+export const metadata: Metadata = {
+  title: "About",
+};
 
 export default async function AboutPage() {
   const { bio } = await getProfileContent();

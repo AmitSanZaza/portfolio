@@ -1,12 +1,27 @@
+import { unstable_rethrow } from "next/navigation";
 import { getProjects } from "@/app/actions/projects";
 import { getProfileContent } from "@/lib/profile-content";
 import { ProjectCard } from "@/components/project-card";
 import { EmptyState } from "@/components/empty-state";
 import { Reveal } from "@/components/reveal";
 
+// If the database is unreachable (e.g. a paused free-tier Supabase project),
+// keep the hero and contact visible and degrade only the projects section.
+async function getProjectsOrNull() {
+  try {
+    return await getProjects();
+  } catch (error) {
+    // Let Next.js's own control-flow errors (dynamic rendering bailout,
+    // redirects) through; only real data failures are handled here.
+    unstable_rethrow(error);
+    console.error(error);
+    return null;
+  }
+}
+
 export default async function HomePage() {
   const [projects, { headline, tagline, contactMethod }] = await Promise.all([
-    getProjects(),
+    getProjectsOrNull(),
     getProfileContent(),
   ]);
 
@@ -53,7 +68,12 @@ export default async function HomePage() {
             </p>
           </Reveal>
 
-          {projects.length === 0 ? (
+          {projects === null ? (
+            <EmptyState
+              title="Projects are temporarily unavailable"
+              description="Please check back in a few minutes."
+            />
+          ) : projects.length === 0 ? (
             <EmptyState
               title="No projects yet"
               description="The first projects land here soon."

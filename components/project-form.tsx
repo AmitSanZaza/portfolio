@@ -71,12 +71,16 @@ export function ProjectForm({
 
       <label className="flex flex-col gap-2 text-[13px] text-ink">
         Image
-        <input type="file" name="image" accept="image/*" className="input" />
-        {project?.image_url && (
-          <span className="text-[12px] text-smoke">
-            Leave empty to keep the current image.
-          </span>
-        )}
+        <input
+          type="file"
+          name="image"
+          accept="image/png,image/jpeg,image/webp,image/gif,image/avif"
+          className="input"
+        />
+        <span className="text-[12px] text-smoke">
+          PNG, JPEG, WebP, GIF or AVIF, up to 4 MB.
+          {project?.image_url && " Leave empty to keep the current image."}
+        </span>
       </label>
 
       <Field

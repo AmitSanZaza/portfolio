@@ -3,6 +3,7 @@ import { Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import { ThemeInit } from "@/components/theme-init";
+import { getSiteUrl } from "@/lib/site";
 import "./globals.css";
 
 // Instrument Serif and JetBrains Mono are both SIL OFL — free for commercial use.
@@ -19,10 +20,22 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500"],
 });
 
+const description =
+  "Computer science student building for the web with Next.js and TypeScript. Selected projects, skills, and contact.";
+
 export const metadata: Metadata = {
-  title: "Amit Barua — Portfolio",
-  description:
-    "Computer science student building for the web with Next.js and TypeScript. Selected projects, skills, and contact.",
+  metadataBase: getSiteUrl(),
+  title: {
+    default: "Amit Barua — Portfolio",
+    template: "%s | Amit Barua",
+  },
+  description,
+  openGraph: {
+    type: "website",
+    siteName: "Amit Barua — Portfolio",
+    title: "Amit Barua — Portfolio",
+    description,
+  },
 };
 
 // Browser chrome follows the page background in both themes.

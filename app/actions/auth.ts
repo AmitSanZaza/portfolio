@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { isSiteOwner } from "@/lib/auth/session";
 
 export type LoginResult = { ok: false; error: string };
 
@@ -25,6 +26,13 @@ export async function login(
 
   if (error) {
     // Generic message on purpose — never reveal whether the email exists.
+    return { ok: false, error: "Invalid email or password." };
+  }
+
+  // A valid account that isn't the site owner gets the same generic message,
+  // and no lingering session.
+  if (!(await isSiteOwner(supabase))) {
+    await supabase.auth.signOut();
     return { ok: false, error: "Invalid email or password." };
   }
 

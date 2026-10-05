@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import { getProfileContent } from "@/lib/profile-content";
 import { PageHeader } from "@/components/page-header";
 import { Reveal } from "@/components/reveal";
+
+export const metadata: Metadata = {
+  title: "Contact",
+};
 
 export default async function ContactPage() {
   const { contactMethod } = await getProfileContent();

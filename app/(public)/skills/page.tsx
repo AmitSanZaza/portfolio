@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import { getProfileContent } from "@/lib/profile-content";
 import { PageHeader } from "@/components/page-header";
+
+export const metadata: Metadata = {
+  title: "Skills",
+};
 
 export default async function SkillsPage() {
   const { skills } = await getProfileContent();

@@ -6,6 +6,7 @@
 // section, specific over generic, no "passionate about", no "welcome to".
 
 export type ProfileContent = {
+  name: string;
   headline: string;
   tagline: string;
   bio: string;
@@ -17,6 +18,7 @@ export type ProfileContent = {
 };
 
 const profileContent: ProfileContent = {
+  name: "Amit Barua",
   headline: "Web apps, built end to end.",
   tagline:
     "I’m Amit Barua, a computer science student. I design, build and deploy full-stack apps with Next.js, TypeScript and Supabase. Every project below is live: open it, click around, read the code.",
